@@ -1,0 +1,7 @@
+  Logical volume "test-1-swap" already exists in volume group "VG01"
+Setting up swapspace version 1, size = 524284 KiB
+no label, UUID=82a8b93a-1d01-40a3-871e-8d760cd5e127
+  Logical volume "test-1-disk" already exists in volume group "VG01"
+libxl: error: libxl_bootloader.c:364:libxl__bootloader_run: failed to create bootloader dir /var/run/xen/bootloader.8.d: No such file or directory
+libxl: error: libxl_create.c:902:domcreate_rebuild_done: cannot (re-)build domain: -3
+Parsing config from /opt/xenbuilder/vm/test-1.vm

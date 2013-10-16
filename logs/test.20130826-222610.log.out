@@ -1,0 +1,64 @@
+  Logical volume "test-17-swap" created
+Setting up swapspace version 1, size = 524284 KiB
+no label, UUID=f308426b-b1e7-4c02-83eb-0d620c4b4990
+  Logical volume "test-17-disk" created
+  Logical volume "test-18-swap" created
+Setting up swapspace version 1, size = 524284 KiB
+no label, UUID=2f42800f-c431-4122-bf53-519cf68d8832
+  Logical volume "test-18-disk" created
+  Logical volume "test-19-swap" created
+Setting up swapspace version 1, size = 524284 KiB
+no label, UUID=71831d42-7335-42f2-a2c1-382b72535db2
+  Logical volume "test-19-disk" created
+  Logical volume "test-20-swap" created
+Setting up swapspace version 1, size = 524284 KiB
+no label, UUID=b8d15e5e-4614-4f8c-ad6b-89aacb4f4484
+  Logical volume "test-20-disk" created
+  Logical volume "test-21-swap" created
+Setting up swapspace version 1, size = 524284 KiB
+no label, UUID=0376a8a5-ec17-4aa9-be86-4fd377a3cb7f
+  Logical volume "test-21-disk" created
+  Logical volume "test-22-swap" created
+Setting up swapspace version 1, size = 524284 KiB
+no label, UUID=82e09f01-f3a5-4993-afe5-ab1606196c98
+  Logical volume "test-22-disk" created
+  Logical volume "test-23-swap" created
+Setting up swapspace version 1, size = 524284 KiB
+no label, UUID=de459b38-47c0-4a7a-b03f-400df749252a
+  Logical volume "test-23-disk" created
+  Logical volume "test-24-swap" created
+Setting up swapspace version 1, size = 524284 KiB
+no label, UUID=42052067-395d-4163-8c74-e09645cb4ed6
+  Logical volume "test-24-disk" created
+  Logical volume "test-25-swap" created
+Setting up swapspace version 1, size = 524284 KiB
+no label, UUID=b221cac5-8ebd-41a8-b30d-a40599eec5a4
+  Logical volume "test-25-disk" created
+  Logical volume "test-26-swap" created
+Setting up swapspace version 1, size = 524284 KiB
+no label, UUID=95c43fb2-5540-4731-bdbd-058b14366348
+  Logical volume "test-26-disk" created
+  Logical volume "test-27-swap" created
+Setting up swapspace version 1, size = 524284 KiB
+no label, UUID=6bc1a2cb-7d28-4ccf-a37f-b7ede0c6bb4f
+  Logical volume "test-27-disk" created
+  Logical volume "test-28-swap" created
+Setting up swapspace version 1, size = 524284 KiB
+no label, UUID=6197af21-a1e5-41fe-b1cc-67ff65b30dbf
+  Logical volume "test-28-disk" created
+  Logical volume "test-29-swap" created
+Setting up swapspace version 1, size = 524284 KiB
+no label, UUID=6e599678-0692-422b-a882-ed72562a06be
+  Logical volume "test-29-disk" created
+  Logical volume "test-30-swap" created
+Setting up swapspace version 1, size = 524284 KiB
+no label, UUID=a2376098-7369-46db-a8e2-a54f411f5843
+  Logical volume "test-30-disk" created
+  Logical volume "test-31-swap" created
+Setting up swapspace version 1, size = 524284 KiB
+no label, UUID=a7bb852d-c236-4581-898e-febc09bf1abc
+  Logical volume "test-31-disk" created
+  Logical volume "test-32-swap" created
+Setting up swapspace version 1, size = 524284 KiB
+no label, UUID=77f40ca6-a723-489d-bf44-b4d810d23d02
+  Logical volume "test-32-disk" created

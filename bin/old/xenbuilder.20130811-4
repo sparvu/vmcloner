@@ -1,0 +1,221 @@
+#!/usr/bin/perl
+use strict;
+use warnings;
+use POSIX qw(strftime);
+use Getopt::Std;
+use File::Copy;
+
+###
+# if @ARGV is empty, show usage and quit
+if ($#ARGV < 0) {
+	print "usage: $0 [-h] || [-v]\n";
+	print "\tor\n";
+	print "usage: $0 -t [template] -c [count] -n [name] -l [logfile]\n";
+	exit(0);
+}
+
+# grab switches
+our($opt_h, $opt_v, $opt_C, $opt_t, $opt_c, $opt_n, $opt_l);
+getopts('hvCt:c:n:l:');
+
+# set defaults and read values
+# - may be null at this point
+my $templatePath="/opt/xenbuilder/images";
+my $vmPath="/opt/xenbuilder/vm";
+my $logPath="/tmp";
+my $logFile = $opt_l;
+my $log; # this will hold the log value later
+my $template = $opt_t;
+my $vmName = $opt_n;
+my $count = $opt_c;
+
+#my $file;
+#my @files;
+
+my $time = strftime "%Y%m%d-%H%M%S", localtime;
+
+###
+# defining subroutines
+###
+
+sub main() {
+	initValues();
+	doLog();
+	buildCommand();
+	builder();
+	exit(0);
+}
+
+sub showConfig() {
+	# print all built-in variables
+	# print all modified variables
+	# note: do useful existence/perm checks at some point you lazy git
+	print "template path is $templatePath\n";
+	if (!-e $templatePath) { print "\tError! $templatePath does not exist!\n"; }
+	print "VM path is $vmPath\n";
+	if (!-e $vmPath) { print "\tError! $vmPath does not exist!\n"; }
+	print "logfile path is $logPath\n";
+	if (!-e $logPath) { print "\tError! $logPath does not exist!\n"; }
+}
+
+sub listTemplates() {
+	# open template path
+	# find all files called *.img push onto array
+	# sort according to name
+	# list from array
+	my $file;
+	my @files;
+	print "showing list of templates:\n\n";
+	opendir (DIR, $templatePath) or die "Error opening $templatePath, $!\n";
+	while ($file = readdir(DIR)) {
+		#next if ($file =~ m/^\./);
+		if ($file =~ m/^\S+\.img$/) {
+			push (@files, $file); #no whitespace, only push if called *.img
+		}
+	}
+	@files = sort {lc($a) cmp lc($b)} @files;
+	foreach $file (@files) {
+	    print "$file\n";
+	}
+	print "\n"; # ending blank line, just looks nice.
+}
+
+sub buildCommand() {
+#	get options
+	print $log "template is $templatePath/$template\n";
+	print $log "logfile is $logPath/$logFile\n";
+	print $log "VM's are named $vmName\[1 to $count\]\n";
+	print $log "count is $count\n";
+
+#	show command
+	print "command is:\n\t$0 -t $templatePath/$template -l $logPath/$logFile -n $vmName -c $count\n\n";
+	print $log "command is:\n\t$0 -t $templatePath/$template -l $logPath/$logFile -n $vmName -c $count\n\n";
+}
+
+sub doLog() {
+	print "Opening logfile $logPath/$logFile\n";
+	open ($log, ">", "$logPath/$logFile") or die "cannot open > $logPath/$logFile: $!";
+}
+
+sub initValues() {
+	# set $vmName to $template if undefined
+	if (!defined $opt_n) {
+		$vmName = $template;
+	}
+
+	# set $count to 1 if undefined
+	if (!defined $opt_c) {
+		$count = 1;
+	}
+
+	if (!defined $opt_l) {
+		$logFile = "$vmName.$time.log";
+	}
+}
+
+sub getMaxVmId() {
+	# open template dir
+	opendir(DIR, $vmPath) or die "can't open dir $vmPath: $!";
+	# read files in template path
+		my @files = readdir(DIR);
+	# check for pre-existing template+digit
+	# find max digit
+		my $maxId = 0;
+		foreach my $file (@files) {
+#			my ($max) = $_ =~ m/$vmName-(\d+)/;
+#			$maxId = $max if $max > $maxId;
+			if ($file =~ m/$vmName-\d+/) {
+				my ($max) = ($file =~ m/$vmName-(\d+)/);
+#				print "maxid is $maxId, max is $max, file is $file\n\n";
+				$maxId = $max if $max > $maxId;
+			}
+		}
+		closedir DIR;
+	# increment counter to digit+1 $templatePath/$template
+	return($maxId+1);
+}
+
+sub buildVm() {
+	# $_[0] is $vmId
+	my $source = "$templatePath/$template";
+#	if ! ( $source =~ m/.*\.img/ ) {
+#		$source = $source+".img";
+#	}
+	my $target = "$vmPath/$vmName-$_[0]";
+	print "\nin buidVm: source is $source, target is $target.\n\n";
+	if( -f "$source" ) { #Check with -f only for files (no directories)
+		copy "$source", "$target" or die "Unable to copy from $source to $target: $!\n\n";
+	}
+}
+
+sub builder() {
+	print "Building $count VM's.\n";
+	my $id=&getMaxVmId(); # fetch the maxId+1
+	my $counter=0; # start counter from 0, this will count from 1
+	while ($counter < $count) {
+		my $vmId=$id+$counter;
+		print "building $vmName-$vmId\n";
+		print $log "building $vmName-$vmId\n";
+		print $log "command: xenbuilder -t $template -n $vmName-$vmId\n";
+		&buildVm($vmId);
+		$counter++;
+	}
+}
+
+# default actions (before calling main() )
+# calls help, prints templates, or prints short help and quits
+
+# if -h, then print long help, and quit
+if ($opt_h) {
+print <<END;
+ This is $0
+
+ This script will create, from a named template, the requested number of
+ virtual machines.
+
+ Switches:
+
+   -h : print this help
+   -v : show available templates
+
+   -t [ template name ]		: mandatory, default location is $templatePath
+   -c [ VM count ]		: default '1'
+   -n [ name base ]		: defaults to [template name]
+   -l [ /path/to/logfile ]	: full path & filename, otherwise $logPath/[logfile]
+
+ Examples:
+
+   \$ xenbuilder -t deb71_64 -c 50
+   \$ xenbuilder -t ubnt1004_32 -c 50 -n ubuntu
+   \$ xenbuilder -t cents59_64 -c 50 -n centos -l /opt/xenbuilder/log/centos.log
+
+END
+exit(0);
+}
+
+# if -v, then print list of available templates, and quit
+if ($opt_v) {
+	listTemplates();
+	exit(0);
+}
+
+if ($opt_C) {
+	showConfig();
+	exit(0);
+}
+
+# if -t is not defined, tell the user to choose a template, and quit
+# make sure this is the last "default"
+if (!defined $opt_t) {
+	print "Please choose a template VM to clone from.\n";
+	listTemplates();
+	exit(1);
+}
+
+###
+# main program block begin
+###
+
+&main();
+### END OF SCRIPT
+

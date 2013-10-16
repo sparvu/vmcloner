@@ -1,0 +1,3 @@
+building test-16
+creating VM config: source is /opt/xenbuilder/templates/precise.cfg, target is /opt/xenbuilder/domains/test-16.
+creating VM LV: source is VG00/precise-disk, target is test-16-disk.

@@ -1,0 +1,12 @@
+building test-39
+creating VM config: source is /opt/xenbuilder/templates/precise-2.cfg, target is /opt/xenbuilder/domains/test-39.
+creating VM LV: source is VG00/precise-disk, target is test-39-disk.
+building test-40
+creating VM config: source is /opt/xenbuilder/templates/precise-2.cfg, target is /opt/xenbuilder/domains/test-40.
+creating VM LV: source is VG00/precise-disk, target is test-40-disk.
+building test-41
+creating VM config: source is /opt/xenbuilder/templates/precise-2.cfg, target is /opt/xenbuilder/domains/test-41.
+creating VM LV: source is VG00/precise-disk, target is test-41-disk.
+building test-42
+creating VM config: source is /opt/xenbuilder/templates/precise-2.cfg, target is /opt/xenbuilder/domains/test-42.
+creating VM LV: source is VG00/precise-disk, target is test-42-disk.

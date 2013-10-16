@@ -1,0 +1,30 @@
+  Logical volume "test-2-swap" created
+  Logical volume "test-5-swap" created
+  Logical volume "test-3-swap" created
+  Logical volume "test-2-disk" created
+Setting up swapspace version 1, size = 524284 KiB
+no label, UUID=48fca69a-4406-47ee-8a1f-5bfff4c8c6c2
+  Logical volume "test-5-disk" created
+Setting up swapspace version 1, size = 524284 KiB
+no label, UUID=d1651b45-b4da-4983-a2fe-75c25ca30fd4
+Parsing config from /opt/xenbuilder/etc/test-2.vm
+Daemon running with PID 23488
+  Logical volume "test-4-swap" created
+  Logical volume "test-6-swap" created
+  Logical volume "test-3-disk" created
+Parsing config from /opt/xenbuilder/etc/test-5.vm
+Daemon running with PID 23653
+Setting up swapspace version 1, size = 524284 KiB
+no label, UUID=e5a34b21-53e4-4f3e-acb8-7f87bf38220d
+  Logical volume "test-4-disk" created
+Parsing config from /opt/xenbuilder/etc/test-3.vm
+Daemon running with PID 23825
+Setting up swapspace version 1, size = 524284 KiB
+no label, UUID=747c85a7-1dbb-4da4-8914-5437143052ce
+Parsing config from /opt/xenbuilder/etc/test-4.vm
+Daemon running with PID 23976
+  Logical volume "test-6-disk" created
+Setting up swapspace version 1, size = 524284 KiB
+no label, UUID=839aa11e-4615-4751-97cd-ea0c35fd3b9d
+Parsing config from /opt/xenbuilder/etc/test-6.vm
+Daemon running with PID 24135

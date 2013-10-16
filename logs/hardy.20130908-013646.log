@@ -1,0 +1,3 @@
+building hardy-3
+creating VM config: source is /opt/xenbuilder/etc/hardy.cfg, target is /opt/xenbuilder/etc/hardy-3.vm.
+creating VM LV: source is VG01/hardy-disk, target is hardy-3-disk.

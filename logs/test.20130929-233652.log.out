@@ -1,0 +1,4 @@
+  Logical volume "test-1-swap" already exists in volume group "VG01"
+Setting up swapspace version 1, size = 524284 KiB
+no label, UUID=376aed7e-6584-4062-b2cf-3c41fcd40095
+  Logical volume "test-1-disk" already exists in volume group "VG01"

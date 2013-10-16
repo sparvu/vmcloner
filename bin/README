@@ -1,0 +1,48 @@
+# Xenbuilder README
+# *****************
+
+xenbuilder components
+
+default paths:
+
+/opt/xenbuilder
+	./bin		binaries and scripts
+	./etc		templates and config files
+	./images	ISO's and saved images
+	./logs		logs
+
+useful files:
+
+in ./bin:
+	xenbuilder		xenbuilder script
+	xenbuilder.conf		xenbuilder script config file
+	create_image.sh		example commands for xen-create-image
+	README			this file
+
+in ./etc
+	[template].cfg		xen config file (some are templates)
+	[template].conf		config file to enable scripting of template .cfg files
+        [vm-id].vm		running xen domain from xenbuilder
+
+ubuntu packages needed:
+	libconfig-simple-perl
+	libparallel-forkmanager-perl
+	liblist-moreutils-perl
+	xen-tools		if you wish to use xen-create-image (check create_image.sh)
+	debootstrap		if you wish to use automated VM creation
+
+necessary configurations:
+	XENVG			put $vmVG (eg: VG01, XENVG) in xenbuilder.conf
+	/dev/$vmVG/thinpool	create this LV as a thin pool (e.g. 250G) for VM's
+	/dev/$vmVG/OPT		mount on /opt/xenbuilder (e.g. 250G)
+	{vm lvol's}		(eg: precise-disk from precise-disk.img)
+
+ubuntu system options:
+	add atime to /, /boot, /opt
+
+TODO:
+
+* Stabilize options (--start,--stop,--create,--delete,--templates)
+* fix thin handling via config options
+* work out why/how xen-4.x pygrub works properly and/or automate kernel config for templates
+* fix templates not to be .cfg but .template

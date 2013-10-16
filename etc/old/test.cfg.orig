@@ -1,0 +1,49 @@
+#
+# Configuration file for the Xen instance test, created
+# by xen-tools 4.2.1 on Thu Aug 15 10:54:15 2013.
+#
+
+#
+#  Kernel + memory size
+#
+kernel      = '/boot/vmlinuz-3.2.0-49-generic'
+ramdisk     = '/boot/initrd.img-3.2.0-49-generic'
+
+vcpus       = '1'
+memory      = '196'
+
+#
+#  Disk device(s).
+#
+root        = '/dev/xvda2 ro'
+disk        = [
+                  'phy:/dev/VG00/test-disk,xvda2,w',
+                  'phy:/dev/VG00/test-swap,xvda1,w',
+              ]
+
+
+#
+#  Physical volumes
+#
+
+
+#
+#  Hostname
+#
+name        = 'test'
+
+#
+#  Networking
+#
+#vif         = [ 'ip=192.168.1.150,mac=00:16:3E:CE:24:7F,bridge=virbr0' ]
+vif         = [ 'bridge=virbr0' ]
+
+#
+#  Behaviour
+#
+on_poweroff = 'destroy'
+on_reboot   = 'restart'
+on_crash    = 'restart'
+
+
+

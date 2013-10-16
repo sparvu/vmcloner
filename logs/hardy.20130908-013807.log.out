@@ -1,0 +1,4 @@
+  Logical volume "hardy-4-swap" created
+Setting up swapspace version 1, size = 524284 KiB
+no label, UUID=ef52515f-63f0-4dbc-8eb1-f569497d83ed
+  Logical volume "hardy-4-disk" created

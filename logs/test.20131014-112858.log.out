@@ -1,0 +1,80 @@
+test-30 is an invalid domain identifier (rc=-6)
+  One or more specified logical volume(s) not found.
+  Logical volume "test-30-swap" successfully removed
+test-29 is an invalid domain identifier (rc=-6)
+  One or more specified logical volume(s) not found.
+  Logical volume "test-29-swap" successfully removed
+test-28 is an invalid domain identifier (rc=-6)
+  One or more specified logical volume(s) not found.
+  Logical volume "test-28-swap" successfully removed
+test-27 is an invalid domain identifier (rc=-6)
+  One or more specified logical volume(s) not found.
+  Logical volume "test-27-swap" successfully removed
+test-26 is an invalid domain identifier (rc=-6)
+  One or more specified logical volume(s) not found.
+  Logical volume "test-26-swap" successfully removed
+test-25 is an invalid domain identifier (rc=-6)
+  One or more specified logical volume(s) not found.
+  Logical volume "test-25-swap" successfully removed
+test-24 is an invalid domain identifier (rc=-6)
+  One or more specified logical volume(s) not found.
+  Logical volume "test-24-swap" successfully removed
+test-23 is an invalid domain identifier (rc=-6)
+  One or more specified logical volume(s) not found.
+  Logical volume "test-23-swap" successfully removed
+test-22 is an invalid domain identifier (rc=-6)
+  One or more specified logical volume(s) not found.
+  Logical volume "test-22-swap" successfully removed
+test-21 is an invalid domain identifier (rc=-6)
+  One or more specified logical volume(s) not found.
+  Logical volume "test-21-swap" successfully removed
+test-20 is an invalid domain identifier (rc=-6)
+  One or more specified logical volume(s) not found.
+  One or more specified logical volume(s) not found.
+test-19 is an invalid domain identifier (rc=-6)
+  One or more specified logical volume(s) not found.
+  One or more specified logical volume(s) not found.
+test-18 is an invalid domain identifier (rc=-6)
+  One or more specified logical volume(s) not found.
+  One or more specified logical volume(s) not found.
+test-17 is an invalid domain identifier (rc=-6)
+  One or more specified logical volume(s) not found.
+  One or more specified logical volume(s) not found.
+test-16 is an invalid domain identifier (rc=-6)
+  One or more specified logical volume(s) not found.
+  One or more specified logical volume(s) not found.
+test-15 is an invalid domain identifier (rc=-6)
+  One or more specified logical volume(s) not found.
+  One or more specified logical volume(s) not found.
+test-14 is an invalid domain identifier (rc=-6)
+  One or more specified logical volume(s) not found.
+  One or more specified logical volume(s) not found.
+test-13 is an invalid domain identifier (rc=-6)
+  One or more specified logical volume(s) not found.
+  One or more specified logical volume(s) not found.
+test-12 is an invalid domain identifier (rc=-6)
+  One or more specified logical volume(s) not found.
+  One or more specified logical volume(s) not found.
+test-11 is an invalid domain identifier (rc=-6)
+  One or more specified logical volume(s) not found.
+  One or more specified logical volume(s) not found.
+  Logical volume "test-10-disk" successfully removed
+  Logical volume "test-10-swap" successfully removed
+  Logical volume "test-9-disk" successfully removed
+  Logical volume "test-9-swap" successfully removed
+  Logical volume "test-8-disk" successfully removed
+  Logical volume "test-8-swap" successfully removed
+  Logical volume "test-7-disk" successfully removed
+  Logical volume "test-7-swap" successfully removed
+  Logical volume "test-6-disk" successfully removed
+  Logical volume "test-6-swap" successfully removed
+  Logical volume "test-5-disk" successfully removed
+  Logical volume "test-5-swap" successfully removed
+  Logical volume "test-4-disk" successfully removed
+  Logical volume "test-4-swap" successfully removed
+  Logical volume "test-3-disk" successfully removed
+  Logical volume "test-3-swap" successfully removed
+  Logical volume "test-2-disk" successfully removed
+  Logical volume "test-2-swap" successfully removed
+  Logical volume "test-1-disk" successfully removed
+  Logical volume "test-1-swap" successfully removed

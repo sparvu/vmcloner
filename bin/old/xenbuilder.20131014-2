@@ -1,0 +1,450 @@
+#!/usr/bin/perl
+use strict;
+use warnings;
+use POSIX qw(strftime);
+use Getopt::Long;
+use File::Copy;
+use Config::Simple;
+use List::MoreUtils 'any';
+
+# if @ARGV is empty, show usage and quit
+if ($#ARGV < 0) {
+  print "usage: $0 [-h] || [--help]\n";
+  print "example: $0 --create -t [template] -c [count] -n [name] -l [logfile]\n";
+  exit(0);
+}
+
+if (( $< != 0 ) or ( $> != 0)) {
+  print "Please run this script as user root.\n";
+  exit(0);
+}
+
+# import config
+# done here because it should die if the conf file isn't available
+# (so load it from cwd)
+my %Config;
+Config::Simple->import_from('xenbuilder.conf', \%Config) or die "Unable to read config file xenbuilder.conf.\n";
+
+# set by %Config
+my $basePath=$Config{'basePath'};
+my $templatePath="$basePath/$Config{'templatePath'}";
+my $vmPath="$basePath/$Config{'domainPath'}";
+my $vmImagePath="$basePath/$Config{'imagePath'}";
+my $logPath="$basePath/$Config{'logPath'}";
+my $vmVG=$Config{'sourceVG'};
+my $vmLV=$Config{'sourceLV'};
+
+# derived from %Config
+my $templateLVPath="/dev/$vmVG";
+
+# global variables
+#my @runningDomains;
+#my @configuredDomains;
+
+# flags and switches
+my $start='0';
+my $stop='0';
+my $create='0';
+my $delete='0';
+my $kill='0';
+my $all='0';
+my $templates='0';
+my $verbose='0';
+my $showconfig='0';
+my $help='0';
+my $logFile;
+my $template;
+my $count;
+my $vmName;
+
+my %opts;
+GetOptions (\%opts,
+  "start"        => \$start,   # flags
+  "stop"         => \$stop,
+  "create"       => \$create,
+  "delete"       => \$delete,
+  "kill"         => \$kill,
+  "all"          => \$all,
+  "templates"    => \$templates,
+  "verbose|v"    => \$verbose,
+  "help|h"       => \$help,
+  "logfile|l=s"  => \$logFile,  # strings
+  "template|t=s" => \$template,
+  "name|n=s"     => \$vmName,
+  "count|c=i"    => \$count     # number
+  );
+
+my $flag = 0;
+
+my $command = $start + $stop + $create + $delete + $templates + $help;
+
+if ($command != 1) {
+  print "ERROR: Use EXACTLY ONE mandatory command from --start, --stop, --delete, --create, --templates or --help.\n";
+  &printLongHelp;
+  exit 1;
+}
+
+# set the time for the logging
+my $time = strftime "%Y%m%d-%H%M%S", localtime;
+
+# set $vmName to $template if undefined
+if (!defined $vmName) {
+  if (defined $template) {
+    $vmName = $template;
+  }
+  else {
+    $vmName = "xenbuilder";
+  }
+}
+
+# set $count to 1 if undefined
+if (!defined $count) {
+  $count = 1;
+  }
+
+if (!defined $logFile) {
+  $logFile = "$vmName.$time.log";
+  }
+
+my $log; # this will hold the log file descriptor
+
+###
+# subroutines
+###
+
+sub main {
+  my $begin = time();
+  print "Script processing started at $time\n";
+  if ($templates) { listTemplates(); }
+  if ($showconfig) { showConfig(); }
+  if ($help) { printLongHelp(); }
+  if ($create) {
+    openLog();
+    doCreate();
+    closeLog();
+    }
+  if ($start) {
+    openLog();
+    doStart();
+    closeLog();
+  }
+
+  if ($stop or $kill) {
+    if ($vmName eq 'Domain') {
+      print "Cowardly refusing to stop Domain-(\\d\+)";
+      exit(1);
+    }
+    openLog();
+    doStop();
+    closeLog();
+  }
+
+  if ($delete) {
+    openLog();
+    doDelete();
+    closeLog();
+  }
+
+  my $end = time();
+  my $duration = $end - $begin;
+  print "script took $duration seconds\n";
+  exit(0);
+}
+
+sub doStart {
+  print "starting up to $count domains matching \"$vmName-[n]\".\n";
+  my @runningDomains = getRunningDomains();
+  my @configuredDomains = getConfiguredDomains();
+
+  foreach my $domain (@configuredDomains) {
+    if ($count > 0) {
+      my $match = any { /$domain/ } @runningDomains;
+      if ($match eq "") {
+        print $log "trying to start $vmPath/$vmName-$domain.vm\n";
+        system "xl create $vmPath/$vmName-$domain.vm >> $logPath/$logFile.out 2>&1 &";
+        unless ($all) { $count = $count - 1; }
+      }
+    }
+  }
+}
+
+sub doStop {
+    print "stopping up to $count domains matching \"$vmName-[n]\".\n";
+    my @runningDomains = getRunningDomains();
+    if ($count > $#runningDomains+1) {
+      $count = $#runningDomains+1;
+    }
+    while ($count > 0) {
+      if ($stop) {
+        my $domain = pop(@runningDomains);
+        system "xl shutdown $vmName-$domain >> $logPath/$logFile.out 2>&1 &";
+      }
+      elsif ($kill) {
+        my $domain = pop(@runningDomains);
+        system "xl destroy $vmName-$domain >> $logPath/$logFile.out 2>&1 &";
+      }
+      unless ($all) { $count = $count - 1; }
+    }
+}
+
+sub doDelete {
+  # edit: add ability to read $vmName.conf file and snag values from it
+  print "stopping and deleting up to $count domains matching \"$vmName-[n]\".\n";
+  my @runningDomains = getRunningDomains();
+  my @configuredDomains = getConfiguredDomains();
+  print "running is @runningDomains\nconfigured is @configuredDomains\n";
+  while (($count > 0) && (@configuredDomains)) {
+    print "count is now $count\n";
+    # destroy domains if running
+    # delete domains (from top down)
+    my $match;
+    my $domain = pop(@configuredDomains);
+    if (defined $domain) {
+      $match = any { /$domain/ } @runningDomains;
+    }
+    if (defined $match) {
+      system "xl destroy $vmName-$domain >> $logPath/$logFile.out 2>&1 &";
+    }
+    if (defined $domain) {
+      unlink "$templatePath/$vmName-$domain.vm";
+      system "lvremove -f $templateLVPath/$vmName-$domain-disk >> $logPath/$logFile.out 2>&1";
+      system "lvremove -f $templateLVPath/$vmName-$domain-swap >> $logPath/$logFile.out 2>&1";
+    }
+    unless ($all) { $count = $count - 1; }
+  }
+}
+
+sub showConfig {
+  # print all built-in variables
+  # print all modified variables
+  # note: do useful existence/perm checks at some point you lazy git
+  print "VM (Image) path is $vmImagePath\n";
+  if (!-e $vmImagePath) { print "\tError! $vmImagePath does not exist!\n"; }
+  print "template config path is $templatePath\n";
+  if (!-e $templatePath) { print "\tError! $templatePath does not exist!\n"; }
+  print "VM (Domain) config path is $vmPath\n";
+  if (!-e $vmPath) { print "\tError! $vmPath does not exist!\n"; }
+  print "logfile path is $logPath\n";
+  if (!-e $logPath) { print "\tError! $logPath does not exist!\n"; }
+  return;
+}
+
+sub getConfiguredDomains {
+  if ($vmName eq '') {
+    print "please choose a name to search for, e.g. \"test\", \"precise\"\n.";
+    exit(1);
+  } # the above shouldn't happen, default is 'xenbuilder'
+  # open vm path
+  # find all files called [vmName]-[id].vm and push onto array
+  # sort according to id
+  # return array
+  my $file;
+  my @domains;
+  opendir (DIR, $templatePath) or die "Error opening $templatePath, $!\n";
+  while ($file = readdir(DIR)) {
+    #next if ($file =~ m/^\./);
+    if ($file =~ m/^$vmName-(\d+)\.vm$/) {
+      push (@domains, $1) ; #no whitespace, only push if called *.vm
+    }
+  }
+  @domains = sort {$a <=> $b} @domains;
+  return(@domains);
+}
+
+sub getRunningDomains {
+  if ($vmName eq '') {
+    print "please choose a name to search for, e.g. \"test\", \"precise\"\n.";
+    exit(0);
+  }
+  my $domain;
+  my @domainList = `xl list`;
+  my @domains;
+
+  foreach $domain (@domainList) {
+    chomp($domain);
+    if ($domain =~ m/.*$vmName-(\d+)\s.*$/) {
+      push(@domains, $1);
+    }
+  }
+  @domains = sort {$a <=> $b} @domains;
+  return(@domains);
+}
+
+sub listTemplates {
+	# open template path
+	# find all files called *.cfg and push onto array
+	# sort according to name
+	# list array
+	my $file;
+	my @files;
+	print "showing list of templates:\n\n";
+	opendir (DIR, $templatePath) or die "Error opening $templatePath, $!\n";
+	while ($file = readdir(DIR)) {
+		#next if ($file =~ m/^\./);
+		if ($file =~ m/^(\S+)\.template$/) {
+			push (@files, $1) ; #no whitespace, only push if called *.template
+		}
+	}
+	@files = sort {lc($a) cmp lc($b)} @files;
+	foreach $file (@files) {
+	    print "$file\n";
+	}
+	print "\n"; # ending blank line, just looks nice.
+	return;
+}
+
+sub buildCommand {
+#	get options
+	print $log "template $template is $templatePath/$template.cfg\n";
+	print $log "logfile is $logPath/$logFile\n";
+	print $log "VM's are named $vmName\[1 to $count\]\n"; #fix me: grab min/max for this
+	print $log "count is $count\n";
+#	show command
+#	print "command is:\n\t$0 -t $templatePath/$template -l $logPath/$logFile -n $vmName -c $count\n\n";
+	print $log "command is:\n\t$0 -t $templatePath/$template -l $logPath/$logFile -n $vmName -c $count\n";
+	return;
+}
+
+sub openLog {
+	print "Opening logfile $logPath/$logFile\n";
+	open ($log, ">", "$logPath/$logFile") or die "cannot open > $logPath/$logFile: $!";
+	return;
+}
+
+sub closeLog {
+	print "Closing logfile $logPath/$logFile\n";
+	close ($log) or warn "cannot close $logPath/$logFile: $!";
+	return;
+}
+
+sub getMaxVmId {
+	# open template dir
+	opendir(DIR, $vmPath) or die "can't open dir $vmPath: $!";
+	# read files in template path
+		my @files = readdir(DIR);
+	# check for pre-existing template+digit
+	# find max digit
+		my $maxId = 0;
+		foreach my $file (@files) {
+			if ($file =~ m/$vmName-\d+\.vm$/) {
+				my ($max) = ($file =~ m/$vmName-(\d+)\.vm$/);
+				$maxId = $max if $max > $maxId;
+			}
+		}
+		closedir DIR;
+	# increment counter to digit+1 $templatePath/$template
+	return($maxId+1);
+}
+
+sub buildVm {
+	my $id = $_[0]; # $_[0] is $vmId
+	my $source = "$templatePath/$template.cfg";
+	my $target = "$vmPath/$vmName-$id.vm";
+	#print "creating VM config\n";
+	my %Config;
+	Config::Simple->import_from("$templatePath/$template.conf", \%Config) or die "Unable to read VM template config file $templatePath/$template.conf.\n";
+	print $log "creating VM config: source is $source, target is $target.\n";
+	if ( -f "$source" ) { # Check with -f only for files (no directories)
+	        open my $in,  '<', $source or die "Can't read old file: $!";
+	        open my $out, '>', $target or die "Can't write new file: $!";
+	
+	        while( <$in> ) {
+	            s/\b($Config{'VMNAME'})\b/$vmName-$id/g;
+	            print $out $_;
+	            }
+	        close $out;
+		}
+	else {
+		print "\nunable to find $source.\n\n";
+		exit 1;
+		}
+
+#	print "creating logical volumes.\n";
+	print $log "creating VM LV: source is $vmVG/$Config{'VMNAME'}-disk, target is $vmName-$id-disk.\n";
+	if ( -e "/dev/$vmVG/$Config{'VMNAME'}-disk" ) {
+		# being lazy(?) and barfing system to logfile.out
+		system "lvcreate -V512M -T VG01/thinpool -n $vmName-$id-swap >> $logPath/$logFile.out 2>&1";
+		system "mkswap -f /dev/$vmVG/$vmName-$id-swap >> $logPath/$logFile.out 2>&1";
+#		system "lvcreate -V1G -T VG01/thinpool -s -n $vmName-$id-disk $vmVG/$Config{'VMNAME'}-disk >> $logPath/$logFile.out 2>&1";
+		system "lvcreate -n $vmName-$id-disk -s $vmVG/$Config{'VMNAME'}-disk >> $logPath/$logFile.out 2>&1";
+	}
+	else {
+		print "error! source disk doesn't exist at $source!\n\n";
+	}
+	system "xl create $target >> $logPath/$logFile.out 2>&1 &";
+	return;
+}
+
+sub doCreate {
+  # if -t is not defined, tell the user to choose a template, and quit
+  # make sure this is the last "default"
+  if (!defined $template) {
+    print "\n\tERROR: please choose a template with -t or --template.\n\n";
+    print $log "in CREATE: template was not defined. bailing out.\n";
+    &listTemplates();
+    return(1);
+  }
+
+  print "Building $count VM's\n";
+  my $id=&getMaxVmId(); # fetch the maxId+1
+  my $counter=0; # start counter from 0, this will count from 1
+  while ($counter < $count) {
+    my $vmId=$id+$counter;
+    print "\tbuilding $vmName-$vmId\n";
+    print $log "building $vmName-$vmId\n";
+    &buildVm($vmId);
+    $counter++;
+  }
+  return;
+}
+
+# if -h, then print long help, and quit
+if ($help) {
+  &printLongHelp();
+  exit(0);
+  }
+
+sub printLongHelp {
+print <<END;
+ This is $0
+
+ This script will create, from a named template, the requested number of
+ virtual machines.
+
+ Mandatory Command Switches:
+  Use EXACTLY ONE of:
+   --start,--stop,--delete,--create,--print|-p,--help|-h (this file)
+
+ Option Switches:
+  Short Versions
+
+   -t [ template name ]		: mandatory, default location is $templatePath
+   -c [ VM count ]		: default '1'
+   -n [ VM Name Base ]		: defaults to [ template name ]
+   -l [ Logfile Name ]		: log filename, default is $logPath/$0.[current date]
+
+  Long Versions
+   --help
+   --print
+   --template=[ template name ]
+   --count=[ VM count ]
+   --name=[ VM Name Base ]
+   --logfile=[ logfile name ]
+   --kill			: used with --stop and --delete
+   --all			: used with --stop and --start
+
+ Examples:
+
+   \$ xenbuilder --create -t deb71_64 -c 50
+   \$ xenbuilder --start -c 50 -n ubuntu
+
+END
+}
+
+###
+# main program block begin
+###
+
+main();
+### END OF SCRIPT
+

@@ -1,0 +1,3 @@
+building lobby-1
+creating VM config: source is /opt/xenbuilder/etc/precise.cfg, target is /opt/xenbuilder/etc/lobby-1.
+creating VM LV: source is VG01/precise-disk, target is lobby-1-disk.

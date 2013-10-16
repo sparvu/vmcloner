@@ -1,0 +1,4 @@
+  Logical volume "test3-1-swap" created
+Setting up swapspace version 1, size = 524284 KiB
+no label, UUID=a57b61b4-8ee3-4466-8296-4cc0896e7b43
+  Logical volume "test3-1-disk" created

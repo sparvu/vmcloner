@@ -1,0 +1,300 @@
+building test-1
+creating VM config: source is /opt/xenbuilder/etc/precise.cfg, target is /opt/xenbuilder/etc/test-1.vm.
+creating VM LV: source is VG01/precise-disk, target is test-1-disk.
+building test-2
+creating VM config: source is /opt/xenbuilder/etc/precise.cfg, target is /opt/xenbuilder/etc/test-2.vm.
+creating VM LV: source is VG01/precise-disk, target is test-2-disk.
+building test-3
+creating VM config: source is /opt/xenbuilder/etc/precise.cfg, target is /opt/xenbuilder/etc/test-3.vm.
+creating VM LV: source is VG01/precise-disk, target is test-3-disk.
+building test-4
+creating VM config: source is /opt/xenbuilder/etc/precise.cfg, target is /opt/xenbuilder/etc/test-4.vm.
+creating VM LV: source is VG01/precise-disk, target is test-4-disk.
+building test-5
+creating VM config: source is /opt/xenbuilder/etc/precise.cfg, target is /opt/xenbuilder/etc/test-5.vm.
+creating VM LV: source is VG01/precise-disk, target is test-5-disk.
+building test-6
+creating VM config: source is /opt/xenbuilder/etc/precise.cfg, target is /opt/xenbuilder/etc/test-6.vm.
+creating VM LV: source is VG01/precise-disk, target is test-6-disk.
+building test-7
+creating VM config: source is /opt/xenbuilder/etc/precise.cfg, target is /opt/xenbuilder/etc/test-7.vm.
+creating VM LV: source is VG01/precise-disk, target is test-7-disk.
+building test-8
+creating VM config: source is /opt/xenbuilder/etc/precise.cfg, target is /opt/xenbuilder/etc/test-8.vm.
+creating VM LV: source is VG01/precise-disk, target is test-8-disk.
+building test-9
+creating VM config: source is /opt/xenbuilder/etc/precise.cfg, target is /opt/xenbuilder/etc/test-9.vm.
+creating VM LV: source is VG01/precise-disk, target is test-9-disk.
+building test-10
+creating VM config: source is /opt/xenbuilder/etc/precise.cfg, target is /opt/xenbuilder/etc/test-10.vm.
+creating VM LV: source is VG01/precise-disk, target is test-10-disk.
+building test-11
+creating VM config: source is /opt/xenbuilder/etc/precise.cfg, target is /opt/xenbuilder/etc/test-11.vm.
+creating VM LV: source is VG01/precise-disk, target is test-11-disk.
+building test-12
+creating VM config: source is /opt/xenbuilder/etc/precise.cfg, target is /opt/xenbuilder/etc/test-12.vm.
+creating VM LV: source is VG01/precise-disk, target is test-12-disk.
+building test-13
+creating VM config: source is /opt/xenbuilder/etc/precise.cfg, target is /opt/xenbuilder/etc/test-13.vm.
+creating VM LV: source is VG01/precise-disk, target is test-13-disk.
+building test-14
+creating VM config: source is /opt/xenbuilder/etc/precise.cfg, target is /opt/xenbuilder/etc/test-14.vm.
+creating VM LV: source is VG01/precise-disk, target is test-14-disk.
+building test-15
+creating VM config: source is /opt/xenbuilder/etc/precise.cfg, target is /opt/xenbuilder/etc/test-15.vm.
+creating VM LV: source is VG01/precise-disk, target is test-15-disk.
+building test-16
+creating VM config: source is /opt/xenbuilder/etc/precise.cfg, target is /opt/xenbuilder/etc/test-16.vm.
+creating VM LV: source is VG01/precise-disk, target is test-16-disk.
+building test-17
+creating VM config: source is /opt/xenbuilder/etc/precise.cfg, target is /opt/xenbuilder/etc/test-17.vm.
+creating VM LV: source is VG01/precise-disk, target is test-17-disk.
+building test-18
+creating VM config: source is /opt/xenbuilder/etc/precise.cfg, target is /opt/xenbuilder/etc/test-18.vm.
+creating VM LV: source is VG01/precise-disk, target is test-18-disk.
+building test-19
+creating VM config: source is /opt/xenbuilder/etc/precise.cfg, target is /opt/xenbuilder/etc/test-19.vm.
+creating VM LV: source is VG01/precise-disk, target is test-19-disk.
+building test-20
+creating VM config: source is /opt/xenbuilder/etc/precise.cfg, target is /opt/xenbuilder/etc/test-20.vm.
+creating VM LV: source is VG01/precise-disk, target is test-20-disk.
+building test-21
+creating VM config: source is /opt/xenbuilder/etc/precise.cfg, target is /opt/xenbuilder/etc/test-21.vm.
+creating VM LV: source is VG01/precise-disk, target is test-21-disk.
+building test-22
+creating VM config: source is /opt/xenbuilder/etc/precise.cfg, target is /opt/xenbuilder/etc/test-22.vm.
+creating VM LV: source is VG01/precise-disk, target is test-22-disk.
+building test-23
+creating VM config: source is /opt/xenbuilder/etc/precise.cfg, target is /opt/xenbuilder/etc/test-23.vm.
+creating VM LV: source is VG01/precise-disk, target is test-23-disk.
+building test-24
+creating VM config: source is /opt/xenbuilder/etc/precise.cfg, target is /opt/xenbuilder/etc/test-24.vm.
+creating VM LV: source is VG01/precise-disk, target is test-24-disk.
+building test-25
+creating VM config: source is /opt/xenbuilder/etc/precise.cfg, target is /opt/xenbuilder/etc/test-25.vm.
+creating VM LV: source is VG01/precise-disk, target is test-25-disk.
+building test-26
+creating VM config: source is /opt/xenbuilder/etc/precise.cfg, target is /opt/xenbuilder/etc/test-26.vm.
+creating VM LV: source is VG01/precise-disk, target is test-26-disk.
+building test-27
+creating VM config: source is /opt/xenbuilder/etc/precise.cfg, target is /opt/xenbuilder/etc/test-27.vm.
+creating VM LV: source is VG01/precise-disk, target is test-27-disk.
+building test-28
+creating VM config: source is /opt/xenbuilder/etc/precise.cfg, target is /opt/xenbuilder/etc/test-28.vm.
+creating VM LV: source is VG01/precise-disk, target is test-28-disk.
+building test-29
+creating VM config: source is /opt/xenbuilder/etc/precise.cfg, target is /opt/xenbuilder/etc/test-29.vm.
+creating VM LV: source is VG01/precise-disk, target is test-29-disk.
+building test-30
+creating VM config: source is /opt/xenbuilder/etc/precise.cfg, target is /opt/xenbuilder/etc/test-30.vm.
+creating VM LV: source is VG01/precise-disk, target is test-30-disk.
+building test-31
+creating VM config: source is /opt/xenbuilder/etc/precise.cfg, target is /opt/xenbuilder/etc/test-31.vm.
+creating VM LV: source is VG01/precise-disk, target is test-31-disk.
+building test-32
+creating VM config: source is /opt/xenbuilder/etc/precise.cfg, target is /opt/xenbuilder/etc/test-32.vm.
+creating VM LV: source is VG01/precise-disk, target is test-32-disk.
+building test-33
+creating VM config: source is /opt/xenbuilder/etc/precise.cfg, target is /opt/xenbuilder/etc/test-33.vm.
+creating VM LV: source is VG01/precise-disk, target is test-33-disk.
+building test-34
+creating VM config: source is /opt/xenbuilder/etc/precise.cfg, target is /opt/xenbuilder/etc/test-34.vm.
+creating VM LV: source is VG01/precise-disk, target is test-34-disk.
+building test-35
+creating VM config: source is /opt/xenbuilder/etc/precise.cfg, target is /opt/xenbuilder/etc/test-35.vm.
+creating VM LV: source is VG01/precise-disk, target is test-35-disk.
+building test-36
+creating VM config: source is /opt/xenbuilder/etc/precise.cfg, target is /opt/xenbuilder/etc/test-36.vm.
+creating VM LV: source is VG01/precise-disk, target is test-36-disk.
+building test-37
+creating VM config: source is /opt/xenbuilder/etc/precise.cfg, target is /opt/xenbuilder/etc/test-37.vm.
+creating VM LV: source is VG01/precise-disk, target is test-37-disk.
+building test-38
+creating VM config: source is /opt/xenbuilder/etc/precise.cfg, target is /opt/xenbuilder/etc/test-38.vm.
+creating VM LV: source is VG01/precise-disk, target is test-38-disk.
+building test-39
+creating VM config: source is /opt/xenbuilder/etc/precise.cfg, target is /opt/xenbuilder/etc/test-39.vm.
+creating VM LV: source is VG01/precise-disk, target is test-39-disk.
+building test-40
+creating VM config: source is /opt/xenbuilder/etc/precise.cfg, target is /opt/xenbuilder/etc/test-40.vm.
+creating VM LV: source is VG01/precise-disk, target is test-40-disk.
+building test-41
+creating VM config: source is /opt/xenbuilder/etc/precise.cfg, target is /opt/xenbuilder/etc/test-41.vm.
+creating VM LV: source is VG01/precise-disk, target is test-41-disk.
+building test-42
+creating VM config: source is /opt/xenbuilder/etc/precise.cfg, target is /opt/xenbuilder/etc/test-42.vm.
+creating VM LV: source is VG01/precise-disk, target is test-42-disk.
+building test-43
+creating VM config: source is /opt/xenbuilder/etc/precise.cfg, target is /opt/xenbuilder/etc/test-43.vm.
+creating VM LV: source is VG01/precise-disk, target is test-43-disk.
+building test-44
+creating VM config: source is /opt/xenbuilder/etc/precise.cfg, target is /opt/xenbuilder/etc/test-44.vm.
+creating VM LV: source is VG01/precise-disk, target is test-44-disk.
+building test-45
+creating VM config: source is /opt/xenbuilder/etc/precise.cfg, target is /opt/xenbuilder/etc/test-45.vm.
+creating VM LV: source is VG01/precise-disk, target is test-45-disk.
+building test-46
+creating VM config: source is /opt/xenbuilder/etc/precise.cfg, target is /opt/xenbuilder/etc/test-46.vm.
+creating VM LV: source is VG01/precise-disk, target is test-46-disk.
+building test-47
+creating VM config: source is /opt/xenbuilder/etc/precise.cfg, target is /opt/xenbuilder/etc/test-47.vm.
+creating VM LV: source is VG01/precise-disk, target is test-47-disk.
+building test-48
+creating VM config: source is /opt/xenbuilder/etc/precise.cfg, target is /opt/xenbuilder/etc/test-48.vm.
+creating VM LV: source is VG01/precise-disk, target is test-48-disk.
+building test-49
+creating VM config: source is /opt/xenbuilder/etc/precise.cfg, target is /opt/xenbuilder/etc/test-49.vm.
+creating VM LV: source is VG01/precise-disk, target is test-49-disk.
+building test-50
+creating VM config: source is /opt/xenbuilder/etc/precise.cfg, target is /opt/xenbuilder/etc/test-50.vm.
+creating VM LV: source is VG01/precise-disk, target is test-50-disk.
+building test-51
+creating VM config: source is /opt/xenbuilder/etc/precise.cfg, target is /opt/xenbuilder/etc/test-51.vm.
+creating VM LV: source is VG01/precise-disk, target is test-51-disk.
+building test-52
+creating VM config: source is /opt/xenbuilder/etc/precise.cfg, target is /opt/xenbuilder/etc/test-52.vm.
+creating VM LV: source is VG01/precise-disk, target is test-52-disk.
+building test-53
+creating VM config: source is /opt/xenbuilder/etc/precise.cfg, target is /opt/xenbuilder/etc/test-53.vm.
+creating VM LV: source is VG01/precise-disk, target is test-53-disk.
+building test-54
+creating VM config: source is /opt/xenbuilder/etc/precise.cfg, target is /opt/xenbuilder/etc/test-54.vm.
+creating VM LV: source is VG01/precise-disk, target is test-54-disk.
+building test-55
+creating VM config: source is /opt/xenbuilder/etc/precise.cfg, target is /opt/xenbuilder/etc/test-55.vm.
+creating VM LV: source is VG01/precise-disk, target is test-55-disk.
+building test-56
+creating VM config: source is /opt/xenbuilder/etc/precise.cfg, target is /opt/xenbuilder/etc/test-56.vm.
+creating VM LV: source is VG01/precise-disk, target is test-56-disk.
+building test-57
+creating VM config: source is /opt/xenbuilder/etc/precise.cfg, target is /opt/xenbuilder/etc/test-57.vm.
+creating VM LV: source is VG01/precise-disk, target is test-57-disk.
+building test-58
+creating VM config: source is /opt/xenbuilder/etc/precise.cfg, target is /opt/xenbuilder/etc/test-58.vm.
+creating VM LV: source is VG01/precise-disk, target is test-58-disk.
+building test-59
+creating VM config: source is /opt/xenbuilder/etc/precise.cfg, target is /opt/xenbuilder/etc/test-59.vm.
+creating VM LV: source is VG01/precise-disk, target is test-59-disk.
+building test-60
+creating VM config: source is /opt/xenbuilder/etc/precise.cfg, target is /opt/xenbuilder/etc/test-60.vm.
+creating VM LV: source is VG01/precise-disk, target is test-60-disk.
+building test-61
+creating VM config: source is /opt/xenbuilder/etc/precise.cfg, target is /opt/xenbuilder/etc/test-61.vm.
+creating VM LV: source is VG01/precise-disk, target is test-61-disk.
+building test-62
+creating VM config: source is /opt/xenbuilder/etc/precise.cfg, target is /opt/xenbuilder/etc/test-62.vm.
+creating VM LV: source is VG01/precise-disk, target is test-62-disk.
+building test-63
+creating VM config: source is /opt/xenbuilder/etc/precise.cfg, target is /opt/xenbuilder/etc/test-63.vm.
+creating VM LV: source is VG01/precise-disk, target is test-63-disk.
+building test-64
+creating VM config: source is /opt/xenbuilder/etc/precise.cfg, target is /opt/xenbuilder/etc/test-64.vm.
+creating VM LV: source is VG01/precise-disk, target is test-64-disk.
+building test-65
+creating VM config: source is /opt/xenbuilder/etc/precise.cfg, target is /opt/xenbuilder/etc/test-65.vm.
+creating VM LV: source is VG01/precise-disk, target is test-65-disk.
+building test-66
+creating VM config: source is /opt/xenbuilder/etc/precise.cfg, target is /opt/xenbuilder/etc/test-66.vm.
+creating VM LV: source is VG01/precise-disk, target is test-66-disk.
+building test-67
+creating VM config: source is /opt/xenbuilder/etc/precise.cfg, target is /opt/xenbuilder/etc/test-67.vm.
+creating VM LV: source is VG01/precise-disk, target is test-67-disk.
+building test-68
+creating VM config: source is /opt/xenbuilder/etc/precise.cfg, target is /opt/xenbuilder/etc/test-68.vm.
+creating VM LV: source is VG01/precise-disk, target is test-68-disk.
+building test-69
+creating VM config: source is /opt/xenbuilder/etc/precise.cfg, target is /opt/xenbuilder/etc/test-69.vm.
+creating VM LV: source is VG01/precise-disk, target is test-69-disk.
+building test-70
+creating VM config: source is /opt/xenbuilder/etc/precise.cfg, target is /opt/xenbuilder/etc/test-70.vm.
+creating VM LV: source is VG01/precise-disk, target is test-70-disk.
+building test-71
+creating VM config: source is /opt/xenbuilder/etc/precise.cfg, target is /opt/xenbuilder/etc/test-71.vm.
+creating VM LV: source is VG01/precise-disk, target is test-71-disk.
+building test-72
+creating VM config: source is /opt/xenbuilder/etc/precise.cfg, target is /opt/xenbuilder/etc/test-72.vm.
+creating VM LV: source is VG01/precise-disk, target is test-72-disk.
+building test-73
+creating VM config: source is /opt/xenbuilder/etc/precise.cfg, target is /opt/xenbuilder/etc/test-73.vm.
+creating VM LV: source is VG01/precise-disk, target is test-73-disk.
+building test-74
+creating VM config: source is /opt/xenbuilder/etc/precise.cfg, target is /opt/xenbuilder/etc/test-74.vm.
+creating VM LV: source is VG01/precise-disk, target is test-74-disk.
+building test-75
+creating VM config: source is /opt/xenbuilder/etc/precise.cfg, target is /opt/xenbuilder/etc/test-75.vm.
+creating VM LV: source is VG01/precise-disk, target is test-75-disk.
+building test-76
+creating VM config: source is /opt/xenbuilder/etc/precise.cfg, target is /opt/xenbuilder/etc/test-76.vm.
+creating VM LV: source is VG01/precise-disk, target is test-76-disk.
+building test-77
+creating VM config: source is /opt/xenbuilder/etc/precise.cfg, target is /opt/xenbuilder/etc/test-77.vm.
+creating VM LV: source is VG01/precise-disk, target is test-77-disk.
+building test-78
+creating VM config: source is /opt/xenbuilder/etc/precise.cfg, target is /opt/xenbuilder/etc/test-78.vm.
+creating VM LV: source is VG01/precise-disk, target is test-78-disk.
+building test-79
+creating VM config: source is /opt/xenbuilder/etc/precise.cfg, target is /opt/xenbuilder/etc/test-79.vm.
+creating VM LV: source is VG01/precise-disk, target is test-79-disk.
+building test-80
+creating VM config: source is /opt/xenbuilder/etc/precise.cfg, target is /opt/xenbuilder/etc/test-80.vm.
+creating VM LV: source is VG01/precise-disk, target is test-80-disk.
+building test-81
+creating VM config: source is /opt/xenbuilder/etc/precise.cfg, target is /opt/xenbuilder/etc/test-81.vm.
+creating VM LV: source is VG01/precise-disk, target is test-81-disk.
+building test-82
+creating VM config: source is /opt/xenbuilder/etc/precise.cfg, target is /opt/xenbuilder/etc/test-82.vm.
+creating VM LV: source is VG01/precise-disk, target is test-82-disk.
+building test-83
+creating VM config: source is /opt/xenbuilder/etc/precise.cfg, target is /opt/xenbuilder/etc/test-83.vm.
+creating VM LV: source is VG01/precise-disk, target is test-83-disk.
+building test-84
+creating VM config: source is /opt/xenbuilder/etc/precise.cfg, target is /opt/xenbuilder/etc/test-84.vm.
+creating VM LV: source is VG01/precise-disk, target is test-84-disk.
+building test-85
+creating VM config: source is /opt/xenbuilder/etc/precise.cfg, target is /opt/xenbuilder/etc/test-85.vm.
+creating VM LV: source is VG01/precise-disk, target is test-85-disk.
+building test-86
+creating VM config: source is /opt/xenbuilder/etc/precise.cfg, target is /opt/xenbuilder/etc/test-86.vm.
+creating VM LV: source is VG01/precise-disk, target is test-86-disk.
+building test-87
+creating VM config: source is /opt/xenbuilder/etc/precise.cfg, target is /opt/xenbuilder/etc/test-87.vm.
+creating VM LV: source is VG01/precise-disk, target is test-87-disk.
+building test-88
+creating VM config: source is /opt/xenbuilder/etc/precise.cfg, target is /opt/xenbuilder/etc/test-88.vm.
+creating VM LV: source is VG01/precise-disk, target is test-88-disk.
+building test-89
+creating VM config: source is /opt/xenbuilder/etc/precise.cfg, target is /opt/xenbuilder/etc/test-89.vm.
+creating VM LV: source is VG01/precise-disk, target is test-89-disk.
+building test-90
+creating VM config: source is /opt/xenbuilder/etc/precise.cfg, target is /opt/xenbuilder/etc/test-90.vm.
+creating VM LV: source is VG01/precise-disk, target is test-90-disk.
+building test-91
+creating VM config: source is /opt/xenbuilder/etc/precise.cfg, target is /opt/xenbuilder/etc/test-91.vm.
+creating VM LV: source is VG01/precise-disk, target is test-91-disk.
+building test-92
+creating VM config: source is /opt/xenbuilder/etc/precise.cfg, target is /opt/xenbuilder/etc/test-92.vm.
+creating VM LV: source is VG01/precise-disk, target is test-92-disk.
+building test-93
+creating VM config: source is /opt/xenbuilder/etc/precise.cfg, target is /opt/xenbuilder/etc/test-93.vm.
+creating VM LV: source is VG01/precise-disk, target is test-93-disk.
+building test-94
+creating VM config: source is /opt/xenbuilder/etc/precise.cfg, target is /opt/xenbuilder/etc/test-94.vm.
+creating VM LV: source is VG01/precise-disk, target is test-94-disk.
+building test-95
+creating VM config: source is /opt/xenbuilder/etc/precise.cfg, target is /opt/xenbuilder/etc/test-95.vm.
+creating VM LV: source is VG01/precise-disk, target is test-95-disk.
+building test-96
+creating VM config: source is /opt/xenbuilder/etc/precise.cfg, target is /opt/xenbuilder/etc/test-96.vm.
+creating VM LV: source is VG01/precise-disk, target is test-96-disk.
+building test-97
+creating VM config: source is /opt/xenbuilder/etc/precise.cfg, target is /opt/xenbuilder/etc/test-97.vm.
+creating VM LV: source is VG01/precise-disk, target is test-97-disk.
+building test-98
+creating VM config: source is /opt/xenbuilder/etc/precise.cfg, target is /opt/xenbuilder/etc/test-98.vm.
+creating VM LV: source is VG01/precise-disk, target is test-98-disk.
+building test-99
+creating VM config: source is /opt/xenbuilder/etc/precise.cfg, target is /opt/xenbuilder/etc/test-99.vm.
+creating VM LV: source is VG01/precise-disk, target is test-99-disk.
+building test-100
+creating VM config: source is /opt/xenbuilder/etc/precise.cfg, target is /opt/xenbuilder/etc/test-100.vm.
+creating VM LV: source is VG01/precise-disk, target is test-100-disk.

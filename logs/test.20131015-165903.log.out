@@ -1,0 +1,50 @@
+  Logical volume "test-11-disk" created
+/dev/VG01/test-11-swap: No such file or directory
+libxl: error: libxl_device.c:259:libxl__device_disk_set_backend: Disk vdev=xvda1 failed to stat: /dev/VG01/test-11-swap: No such file or directory
+Parsing config from /opt/xenbuilder/etc/test-11.vm
+  Logical volume "test-12-disk" created
+/dev/VG01/test-12-swap: No such file or directory
+libxl: error: libxl_device.c:259:libxl__device_disk_set_backend: Disk vdev=xvda1 failed to stat: /dev/VG01/test-12-swap: No such file or directory
+Parsing config from /opt/xenbuilder/etc/test-12.vm
+  Logical volume "test-13-disk" created
+/dev/VG01/test-13-swap: No such file or directory
+libxl: error: libxl_device.c:259:libxl__device_disk_set_backend: Disk vdev=xvda1 failed to stat: /dev/VG01/test-13-swap: No such file or directory
+Parsing config from /opt/xenbuilder/etc/test-13.vm
+  Logical volume "test-15-disk" created
+/dev/VG01/test-15-swap: No such file or directory
+libxl: error: libxl_device.c:259:libxl__device_disk_set_backend: Disk vdev=xvda1 failed to stat: /dev/VG01/test-15-swap: No such file or directory
+Parsing config from /opt/xenbuilder/etc/test-15.vm
+  Logical volume "test-14-disk" created
+/dev/VG01/test-14-swap: No such file or directory
+libxl: error: libxl_device.c:259:libxl__device_disk_set_backend: Disk vdev=xvda1 failed to stat: /dev/VG01/test-14-swap: No such file or directory
+Parsing config from /opt/xenbuilder/etc/test-14.vm
+  Logical volume "test-17-disk" created
+/dev/VG01/test-17-swap: No such file or directory
+libxl: error: libxl_device.c:259:libxl__device_disk_set_backend: Disk vdev=xvda1 failed to stat: /dev/VG01/test-17-swap: No such file or directory
+Parsing config from /opt/xenbuilder/etc/test-17.vm
+  Logical volume "test-16-disk" created
+/dev/VG01/test-16-swap: No such file or directory
+libxl: error: libxl_device.c:259:libxl__device_disk_set_backend: Disk vdev=xvda1 failed to stat: /dev/VG01/test-16-swap: No such file or directory
+Parsing config from /opt/xenbuilder/etc/test-16.vm
+  Logical volume "test-12-swap" created
+  Logical volume "test-17-swap" created
+  Logical volume "test-11-swap" created
+  Logical volume "test-13-swap" created
+  Logical volume "test-15-swap" created
+  Logical volume "test-18-disk" created
+/dev/VG01/test-18-swap: No such file or directory
+libxl: error: libxl_device.c:259:libxl__device_disk_set_backend: Disk vdev=xvda1 failed to stat: /dev/VG01/test-18-swap: No such file or directory
+Parsing config from /opt/xenbuilder/etc/test-18.vm
+  Logical volume "test-16-swap" created
+  Logical volume "test-19-disk" created
+/dev/VG01/test-19-swap: No such file or directory
+libxl: error: libxl_device.c:259:libxl__device_disk_set_backend: Disk vdev=xvda1 failed to stat: /dev/VG01/test-19-swap: No such file or directory
+Parsing config from /opt/xenbuilder/etc/test-19.vm
+  Logical volume "test-18-swap" created
+  Logical volume "test-20-disk" created
+/dev/VG01/test-20-swap: No such file or directory
+libxl: error: libxl_device.c:259:libxl__device_disk_set_backend: Disk vdev=xvda1 failed to stat: /dev/VG01/test-20-swap: No such file or directory
+Parsing config from /opt/xenbuilder/etc/test-20.vm
+  Logical volume "test-19-swap" created
+  Logical volume "test-14-swap" created
+  Logical volume "test-20-swap" created

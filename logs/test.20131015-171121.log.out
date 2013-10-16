@@ -1,0 +1,23 @@
+Parsing config from /opt/xenbuilder/etc/test-14.vm
+Daemon running with PID 27365
+Parsing config from /opt/xenbuilder/etc/test-16.vm
+Daemon running with PID 27489
+Parsing config from /opt/xenbuilder/etc/test-15.vm
+Daemon running with PID 27616
+Parsing config from /opt/xenbuilder/etc/test-12.vm
+Daemon running with PID 27740
+Parsing config from /opt/xenbuilder/etc/test-11.vm
+Daemon running with PID 27865
+Parsing config from /opt/xenbuilder/etc/test-8.vm
+Daemon running with PID 27990
+Parsing config from /opt/xenbuilder/etc/test-13.vm
+Daemon running with PID 28122
+libxl: error: libxl.c:314:libxl__domain_rename: domain with name "test-10" already exists.
+libxl: error: libxl_create.c:663:initiate_domain_create: cannot make domain: -6
+Parsing config from /opt/xenbuilder/etc/test-10.vm
+libxl: error: libxl.c:314:libxl__domain_rename: domain with name "test-9" already exists.
+libxl: error: libxl_create.c:663:initiate_domain_create: cannot make domain: -6
+Parsing config from /opt/xenbuilder/etc/test-9.vm
+libxl: error: libxl.c:314:libxl__domain_rename: domain with name "test-7" already exists.
+libxl: error: libxl_create.c:663:initiate_domain_create: cannot make domain: -6
+Parsing config from /opt/xenbuilder/etc/test-7.vm

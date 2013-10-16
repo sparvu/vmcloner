@@ -1,0 +1,22 @@
+libxl: error: libxl_bootloader.c:628:bootloader_finished: bootloader failed - consult logfile /var/log/xen/bootloader.39.log
+libxl: error: libxl_exec.c:118:libxl_report_child_exitstatus: bootloader [17389] exited with error status 1
+libxl: error: libxl_create.c:919:domcreate_rebuild_done: cannot (re-)build domain: -3
+Parsing config from /opt/xenbuilder/etc/test-1.vm
+Parsing config from /opt/xenbuilder/etc/test-2.vm
+Daemon running with PID 17521
+Parsing config from /opt/xenbuilder/etc/test-3.vm
+Daemon running with PID 17657
+Parsing config from /opt/xenbuilder/etc/test-4.vm
+Daemon running with PID 17798
+Parsing config from /opt/xenbuilder/etc/test-5.vm
+Daemon running with PID 17933
+Parsing config from /opt/xenbuilder/etc/test-6.vm
+Daemon running with PID 18068
+Parsing config from /opt/xenbuilder/etc/test-7.vm
+Daemon running with PID 18203
+Parsing config from /opt/xenbuilder/etc/test-8.vm
+Daemon running with PID 18338
+Parsing config from /opt/xenbuilder/etc/test-9.vm
+Daemon running with PID 18464
+Parsing config from /opt/xenbuilder/etc/test-10.vm
+Daemon running with PID 18611

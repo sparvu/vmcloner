@@ -1,0 +1,47 @@
+#
+# Configuration file for the Xen instance test-93-196m, created
+# by xen-tools 4.3.1 on Mon Aug 26 20:29:00 2013.
+#
+
+#
+#  Kernel + memory size
+#
+
+bootloader = '/usr/lib/xen-4.2/bin/pygrub'
+
+vcpus       = '1'
+memory      = '128'
+
+#
+#  Disk device(s).
+#
+root        = '/dev/xvda2 ro'
+disk        = [
+                  'phy:/dev/VG01/test-93-disk,xvda2,w',
+                  'phy:/dev/VG01/test-93-swap,xvda1,w',
+              ]
+
+
+#
+#  Physical volumes
+#
+
+
+#
+#  Hostname
+#
+name        = 'test-93'
+
+#
+#  Networking
+#
+dhcp        = 'dhcp'
+vif         = [ 'bridge=bridge0' ]
+
+#
+#  Behaviour
+#
+on_poweroff = 'destroy'
+on_reboot   = 'restart'
+on_crash    = 'restart'
+

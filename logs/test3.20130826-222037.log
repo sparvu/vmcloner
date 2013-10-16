@@ -1,0 +1,3 @@
+building test3-1
+creating VM config: source is /opt/xenbuilder/templates/precise-3.cfg, target is /opt/xenbuilder/domains/test3-1.
+creating VM LV: source is VG00/precise-disk, target is test3-1-disk.

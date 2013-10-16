@@ -1,0 +1,50 @@
+  Only specify Physical volumes when allocating the thin pool.
+/dev/VG01/test-11-swap: No such file or directory
+  Only specify Physical volumes when allocating the thin pool.
+libxl: error: libxl_device.c:259:libxl__device_disk_set_backend: Disk vdev=xvda2 failed to stat: /dev/VG01/test-11-disk: No such file or directory
+Parsing config from /opt/xenbuilder/etc/test-11.vm
+  Only specify Physical volumes when allocating the thin pool.
+/dev/VG01/test-12-swap: No such file or directory
+  Only specify Physical volumes when allocating the thin pool.
+libxl: error: libxl_device.c:259:libxl__device_disk_set_backend: Disk vdev=xvda2 failed to stat: /dev/VG01/test-12-disk: No such file or directory
+Parsing config from /opt/xenbuilder/etc/test-12.vm
+  Only specify Physical volumes when allocating the thin pool.
+/dev/VG01/test-13-swap: No such file or directory
+  Only specify Physical volumes when allocating the thin pool.
+libxl: error: libxl_device.c:259:libxl__device_disk_set_backend: Disk vdev=xvda2 failed to stat: /dev/VG01/test-13-disk: No such file or directory
+Parsing config from /opt/xenbuilder/etc/test-13.vm
+  Only specify Physical volumes when allocating the thin pool.
+/dev/VG01/test-14-swap: No such file or directory
+  Only specify Physical volumes when allocating the thin pool.
+libxl: error: libxl_device.c:259:libxl__device_disk_set_backend: Disk vdev=xvda2 failed to stat: /dev/VG01/test-14-disk: No such file or directory
+Parsing config from /opt/xenbuilder/etc/test-14.vm
+  Only specify Physical volumes when allocating the thin pool.
+/dev/VG01/test-15-swap: No such file or directory
+  Only specify Physical volumes when allocating the thin pool.
+libxl: error: libxl_device.c:259:libxl__device_disk_set_backend: Disk vdev=xvda2 failed to stat: /dev/VG01/test-15-disk: No such file or directory
+Parsing config from /opt/xenbuilder/etc/test-15.vm
+  Only specify Physical volumes when allocating the thin pool.
+/dev/VG01/test-16-swap: No such file or directory
+  Only specify Physical volumes when allocating the thin pool.
+libxl: error: libxl_device.c:259:libxl__device_disk_set_backend: Disk vdev=xvda2 failed to stat: /dev/VG01/test-16-disk: No such file or directory
+Parsing config from /opt/xenbuilder/etc/test-16.vm
+  Only specify Physical volumes when allocating the thin pool.
+/dev/VG01/test-17-swap: No such file or directory
+  Only specify Physical volumes when allocating the thin pool.
+libxl: error: libxl_device.c:259:libxl__device_disk_set_backend: Disk vdev=xvda2 failed to stat: /dev/VG01/test-17-disk: No such file or directory
+Parsing config from /opt/xenbuilder/etc/test-17.vm
+  Only specify Physical volumes when allocating the thin pool.
+/dev/VG01/test-18-swap: No such file or directory
+  Only specify Physical volumes when allocating the thin pool.
+libxl: error: libxl_device.c:259:libxl__device_disk_set_backend: Disk vdev=xvda2 failed to stat: /dev/VG01/test-18-disk: No such file or directory
+Parsing config from /opt/xenbuilder/etc/test-18.vm
+  Only specify Physical volumes when allocating the thin pool.
+/dev/VG01/test-19-swap: No such file or directory
+  Only specify Physical volumes when allocating the thin pool.
+libxl: error: libxl_device.c:259:libxl__device_disk_set_backend: Disk vdev=xvda2 failed to stat: /dev/VG01/test-19-disk: No such file or directory
+Parsing config from /opt/xenbuilder/etc/test-19.vm
+  Only specify Physical volumes when allocating the thin pool.
+/dev/VG01/test-20-swap: No such file or directory
+  Only specify Physical volumes when allocating the thin pool.
+libxl: error: libxl_device.c:259:libxl__device_disk_set_backend: Disk vdev=xvda2 failed to stat: /dev/VG01/test-20-disk: No such file or directory
+Parsing config from /opt/xenbuilder/etc/test-20.vm

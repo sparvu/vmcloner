@@ -1,0 +1,4 @@
+  Logical volume "precise-128m-1-swap" created
+Setting up swapspace version 1, size = 524284 KiB
+no label, UUID=29c2fc7f-aa76-4611-83c0-08219e77c17e
+  Logical volume "precise-128m-1-disk" created
