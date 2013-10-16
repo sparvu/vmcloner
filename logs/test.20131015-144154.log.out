@@ -1,1 +1,0 @@
-sh: 1: cmd1 ; /sbin/mkswap -f /dev/VG01/test-2-swap ; /sbin/lvcreate -n test-2-disk -s VG01/precise-disk ; /usr/sbin/xl create /opt/xenbuilder/etc/test-2.vm: not found

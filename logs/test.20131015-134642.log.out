@@ -1,5 +1,0 @@
-/dev/VG01/test-1-swap: No such file or directory
-libxl: error: libxl_device.c:259:libxl__device_disk_set_backend: Disk vdev=xvda2 failed to stat: /dev/VG01/test-1-disk: No such file or directory
-Parsing config from /opt/xenbuilder/etc/test-1.vm
-  Logical volume "test-1-swap" created
-  Logical volume "test-1-disk" created

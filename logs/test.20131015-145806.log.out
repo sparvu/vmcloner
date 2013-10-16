@@ -1,6 +1,0 @@
-  Logical volume "test-1-swap" already exists in volume group "VG01"
-  Logical volume "test-1-disk" created
-Setting up swapspace version 1, size = 524284 KiB
-no label, UUID=421dec35-a4ec-4005-9210-9cdef3c1621a
-Parsing config from /opt/xenbuilder/etc/test-1.vm
-Daemon running with PID 22693

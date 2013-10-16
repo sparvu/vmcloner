@@ -1,7 +1,0 @@
-  Logical volume "test-1-swap" already exists in volume group "VG01"
-Setting up swapspace version 1, size = 524284 KiB
-no label, UUID=f2fade63-45fb-4c22-8af4-3e6eb59c19e3
-  Logical volume "test-1-disk" already exists in volume group "VG01"
-libxl: error: libxl.c:314:libxl__domain_rename: domain with name "test-1" already exists.
-libxl: error: libxl_create.c:646:initiate_domain_create: cannot make domain: -6
-Parsing config from /opt/xenbuilder/etc/test-1.vm

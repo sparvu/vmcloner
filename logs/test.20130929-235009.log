@@ -1,3 +1,0 @@
-building test-2
-creating VM config: source is /opt/xenbuilder/etc/precise.cfg, target is /opt/xenbuilder/etc/test-2.vm.
-creating VM LV: source is VG01/precise-disk, target is test-2-disk.

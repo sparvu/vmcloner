@@ -1,3 +1,0 @@
-building precise-128m-1
-creating VM config: source is /opt/xenbuilder/etc/precise-128m.cfg, target is /opt/xenbuilder/etc/precise-128m-1.
-creating VM LV: source is VG01/precise-disk, target is precise-128m-1-disk.
