@@ -182,6 +182,8 @@ sub doStop {
   print "stopping up to $count domains matching \"$vmName-[n]\".\n";
   my @runningDomains = getRunningDomains();
   my $pm = new Parallel::ForkManager(4);
+  $pm->run_on_start($count--);
+  $pm->run_on_wait(sub { print "."; }, 1);
 
   if (($all == 1) or ($count > $#runningDomains+1)) {
     $count = $#runningDomains+1;
@@ -190,21 +192,17 @@ sub doStop {
       if ($stop) {
         my $domain = pop(@runningDomains);
         if (defined $domain) {
-         $pm->run_on_start($count--);
-         $pm->run_on_wait(sub { print "."; }, 1);
-         $pm->start and next; # do the fork
-           system "/usr/sbin/xl shutdown $vmName-$domain >> $logPath/$logFile.out 2>&1";
-         $pm->finish; # do the exit in the child process
+          $pm->start and next; # do the fork
+            system "/usr/sbin/xl shutdown $vmName-$domain >> $logPath/$logFile.out 2>&1";
+          $pm->finish; # do the exit in the child process
         }
       }
       elsif ($kill) {
         my $domain = pop(@runningDomains);
         if (defined $domain) {
-         $pm->run_on_start($count--);
-         $pm->run_on_wait(sub { print "."; }, 1);
-         $pm->start and next; # do the fork
-           system "/usr/sbin/xl destroy $vmName-$domain >> $logPath/$logFile.out 2>&1";
-         $pm->finish; # do the exit in the child process
+          $pm->start and next; # do the fork
+            system "/usr/sbin/xl destroy $vmName-$domain >> $logPath/$logFile.out 2>&1";
+          $pm->finish; # do the exit in the child process
         }
       }
   }
@@ -215,30 +213,39 @@ sub doDelete {
   # edit: add ability to read $vmName.conf file and snag values from it
   if ($all == 0) { print "stopping and deleting up to $count domains matching \"$vmName-[n]\".\n"; }
   else { print "stopping and deleting all domains matching \"$vmName-[n]\".\n"; }
+
   my @runningDomains = getRunningDomains();
   my @configuredDomains = getConfiguredDomains();
+  my $pm = new Parallel::ForkManager(4);
+
+  $pm->run_on_start(sub { unless ($all == 1) { $count--; }});
+  $pm->run_on_wait(sub { print "."; }, 1);
+
   if ($verbose == 1) { print "running is @runningDomains\nconfigured is @configuredDomains\n"; }
   while (($count > 0) && (@configuredDomains)) {
-    if ($verbose == 1) { print "count is now $count\n"; }
-    # destroy domains if running
-    # delete domains (from top down)
-    my $match;
     my $domain = pop(@configuredDomains);
-    if (defined $domain) {
-      $match = any { /$domain/ } @runningDomains;
-    }
-    if (defined $match) {
-      system "/usr/sbin/xl destroy $vmName-$domain >> $logPath/$logFile.out 2>&1";
-    }
-    if (defined $domain) {
-      unlink "$templatePath/$vmName-$domain.vm";
-      my $cmd1 = "/sbin/lvremove -f $templateLVPath/$vmName-$domain-disk";
-      my $cmd2 = "/sbin/lvremove -f $templateLVPath/$vmName-$domain-swap";
-      my $redirect = ">> $logPath/$logFile.out 2>&1";
-      system "$cmd1 $redirect ; $cmd2 $redirect &";
-    }
-    unless ($all==1) { $count--; }
+    $pm->start and next; # do the fork
+      if ($verbose == 1) { print "count is now $count\n"; }
+      # destroy domains if running
+      # delete domains (from top down)
+      my $match;
+      if (defined $domain) {
+        $match = any { /$domain/ } @runningDomains;
+      }
+      if (defined $match) {
+        system "/usr/sbin/xl destroy $vmName-$domain >> $logPath/$logFile.out 2>&1";
+      }
+      if (defined $domain) {
+        unlink "$templatePath/$vmName-$domain.vm";
+        my $cmd1 = "/sbin/lvremove -f $templateLVPath/$vmName-$domain-disk";
+        my $cmd2 = "/sbin/lvremove -f $templateLVPath/$vmName-$domain-swap";
+        my $redirect = ">> $logPath/$logFile.out 2>&1";
+        system "$cmd1 $redirect ; $cmd2 $redirect &";
+      }
+      # unless ($all==1) { $count--; }
+    $pm->finish; # do the exit in the child process
   }
+  print " done.\n";
 }
 
 sub showConfig {
@@ -422,8 +429,11 @@ sub doCreate {
   my $id=getMaxVmId(); # fetch the maxId+1
   my $counter=0; # start counter from 0, this will count from 1
   my $pm = new Parallel::ForkManager(4); 
+  $pm->run_on_start($counter++);
+  $pm->run_on_wait(sub { print "."; }, 1);
+
+#  for ($counter=0 ; $counter < $count ; $counter++) {
   while ($counter < $count) {
-    $pm->run_on_start($counter++);
     $pm->start and next; # do the fork 
       my $vmId=$id+$counter-1;
       if ($verbose == 1) { print "\tbuilding $vmName-$vmId\n"; }
@@ -432,6 +442,7 @@ sub doCreate {
     $pm->finish; # do the exit in the child process
   }
   $pm->wait_all_children;
+  print " done.\n";
   return;
 }
 
