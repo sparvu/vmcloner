@@ -200,9 +200,9 @@ sub doDelete {
   print "stopping and deleting up to $count domains matching \"$vmName-[n]\".\n";
   my @runningDomains = getRunningDomains();
   my @configuredDomains = getConfiguredDomains();
-  if (defined $verbose) { print "running is @runningDomains\nconfigured is @configuredDomains\n"; }
+  if ($verbose == 1) { print "running is @runningDomains\nconfigured is @configuredDomains\n"; }
   while (($count > 0) && (@configuredDomains)) {
-    if (defined $verbose) { print "count is now $count\n"; }
+    if ($verbose == 1) { print "count is now $count\n"; }
     # destroy domains if running
     # delete domains (from top down)
     my $match;
@@ -350,7 +350,7 @@ sub buildVm {
   my $id = $_[0]; # $_[0] is $vmId
   my $source = "$templatePath/$template.template";
   my $target = "$vmPath/$vmName-$id.vm";
-  if (defined $verbose) { print "creating VM config\n"; }
+  if ($verbose == 1) { print "creating VM config\n"; }
   my %Config;
   Config::Simple->import_from("$templatePath/$template.conf", \%Config) or die "Unable to read VM template config file $templatePath/$template.conf.\n";
   print $log "creating VM config: source is $source, target is $target.\n";
@@ -369,7 +369,7 @@ sub buildVm {
     exit 1;
   }
 
-  if (defined $verbose) { print "creating logical volumes.\n"; }
+  if ($verbose == 1) { print "creating logical volumes.\n"; }
   print $log "creating VM LV: source is $vmVG/$Config{'VMNAME'}-disk, target is $vmName-$id-disk.\n";
   if ( -e "/dev/$vmVG/$Config{'VMNAME'}-disk" ) {
     # being lazy(?) and barfing system to logfile.out
@@ -404,7 +404,7 @@ sub doCreate {
     $pm->run_on_start($counter++);
     $pm->start and next; # do the fork 
       my $vmId=$id+$counter-1;
-      if (defined $verbose) { print "\tbuilding $vmName-$vmId\n"; }
+      if ($verbose == 1) { print "\tbuilding $vmName-$vmId\n"; }
       print $log "building $vmName-$vmId\n";
       buildVm($vmId);
     $pm->finish; # do the exit in the child process
