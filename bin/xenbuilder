@@ -183,7 +183,7 @@ sub doStop {
   my @runningDomains = getRunningDomains();
   my $pm = new Parallel::ForkManager(4);
 #  $pm->run_on_start($count--);
-  $pm->run_on_wait(sub { print "."; }, 1);
+  $pm->run_on_wait(sub { print "."; });
 
   if (($all == 1) or ($count > $#runningDomains+1)) {
     $count = $#runningDomains+1;
@@ -219,11 +219,15 @@ sub doDelete {
   my @configuredDomains = getConfiguredDomains();
   my $pm = new Parallel::ForkManager(4);
 
-  $pm->run_on_start(sub { unless ($all == 1) { $count--; }});
+  if ($all == 1) {
+    $count = $#configuredDomains+1;
+  }
+
+#  $pm->run_on_start(sub { unless ($all == 1) { $count--; }});
   $pm->run_on_wait(sub { print "."; }, 1);
 
   if ($verbose == 1) { print "running is @runningDomains\nconfigured is @configuredDomains\n"; }
-  while (($count > 0) && (@configuredDomains)) {
+  for ( ; $count > 0 ; $count--) {
     my $domain = pop(@configuredDomains);
     $pm->start and next; # do the fork
       if ($verbose == 1) { print "count is now $count\n"; }
