@@ -159,17 +159,21 @@ sub doStart {
   print "starting up to $count domains matching \"$vmName-[n]\".\n";
   my @runningDomains = getRunningDomains();
   my @configuredDomains = getConfiguredDomains();
+  my $pm = new Parallel::ForkManager(4);
 
   foreach my $domain (@configuredDomains) {
     if ($count > 0) {
       my $match = any { /$domain/ } @runningDomains;
       if ($match eq "") {
         print $log "trying to start $vmPath/$vmName-$domain.vm\n";
-        system "/usr/sbin/xl create $vmPath/$vmName-$domain.vm >> $logPath/$logFile.out 2>&1";
+        $pm->start and next; # do the fork
+         system "/usr/sbin/xl create $vmPath/$vmName-$domain.vm >> $logPath/$logFile.out 2>&1";
+        $pm->finish; # do the exit in the child process
         unless ($all) { $count--; }
       }
     }
   }
+  $pm->wait_all_children;
 }
 
 sub doStop {
