@@ -51,7 +51,6 @@ my $kill='0';
 my $all='0';
 my $templates='0';
 my $verbose='0';
-my $showconfig='0';
 my $help='0';
 my $logFile;
 my $template;
@@ -63,10 +62,10 @@ GetOptions (\%opts,
   "start"        => \$start,   # flags
   "stop"         => \$stop,
   "create"       => \$create,
-  "delete"       => \$delete,
+  "delete|destroy" => \$delete,
   "kill"         => \$kill,
   "all"          => \$all,
-  "templates"    => \$templates,
+  "templates|list" => \$templates,
   "verbose|v"    => \$verbose,
   "help|h"       => \$help,
   "logfile|l=s"  => \$logFile,  # strings
@@ -81,7 +80,7 @@ my $command = $start + $stop + $create + $delete + $templates + $help;
 
 if ($command != 1) {
   print "ERROR: Use EXACTLY ONE mandatory command from --start, --stop, --delete, --create, --templates or --help.\n";
-  &printLongHelp;
+  printLongHelp();
   exit 1;
 }
 
@@ -101,11 +100,11 @@ if (!defined $vmName) {
 # set $count to 1 if undefined
 if (!defined $count) {
   $count = 1;
-  }
+}
 
 if (!defined $logFile) {
   $logFile = "$vmName.$time.log";
-  }
+}
 
 my $log; # this will hold the log file descriptor
 
@@ -114,17 +113,20 @@ my $log; # this will hold the log file descriptor
 ###
 
 sub main {
+  if ($help) {
+    printLongHelp();
+    exit(0);
+  }
+
   my $begin = time();
   print "Script processing started at $time\n";
   if ($templates) { listTemplates(); }
-  if ($showconfig) { showConfig(); }
-  if ($help) { printLongHelp(); }
   if ($create) {
     openLog();
     doCreate();
     doStart();
     closeLog();
-    }
+  }
   if ($start) {
     openLog();
     doStart();
@@ -163,8 +165,8 @@ sub doStart {
       my $match = any { /$domain/ } @runningDomains;
       if ($match eq "") {
         print $log "trying to start $vmPath/$vmName-$domain.vm\n";
-        system "/usr/sbin/xl create $vmPath/$vmName-$domain.vm >> $logPath/$logFile.out 2>&1 &";
-        unless ($all) { $count = $count - 1; }
+        system "/usr/sbin/xl create $vmPath/$vmName-$domain.vm >> $logPath/$logFile.out 2>&1";
+        unless ($all) { $count--; }
       }
     }
   }
@@ -186,7 +188,7 @@ sub doStop {
       elsif ($kill) {
         my $domain = pop(@runningDomains);
         if (defined $domain) {
-          system "/usr/sbin/xl destroy $vmName-$domain >> $logPath/$logFile.out 2>&1 &";
+          system "/usr/sbin/xl destroy $vmName-$domain >> $logPath/$logFile.out 2>&1";
         }
       }
       $count = $count - 1;
@@ -198,9 +200,9 @@ sub doDelete {
   print "stopping and deleting up to $count domains matching \"$vmName-[n]\".\n";
   my @runningDomains = getRunningDomains();
   my @configuredDomains = getConfiguredDomains();
-  print "running is @runningDomains\nconfigured is @configuredDomains\n";
+  if (defined $verbose) { print "running is @runningDomains\nconfigured is @configuredDomains\n"; }
   while (($count > 0) && (@configuredDomains)) {
-    print "count is now $count\n";
+    if (defined $verbose) { print "count is now $count\n"; }
     # destroy domains if running
     # delete domains (from top down)
     my $match;
@@ -218,7 +220,7 @@ sub doDelete {
       my $redirect = ">> $logPath/$logFile.out 2>&1";
       system "$cmd1 ; $cmd2 $redirect &";
     }
-    unless ($all) { $count = $count - 1; }
+    unless ($all) { $count--; }
   }
 }
 
@@ -262,10 +264,10 @@ sub getConfiguredDomains {
 sub getRunningDomains {
   if ($vmName eq '') {
     print "please choose a name to search for, e.g. \"test\", \"precise\"\n.";
-    exit(0);
+    exit(1);
   }
   my $domain;
-  my @domainList = `/usr/sbin/xl list`;
+  my @domainList = `/usr/sbin/xl vm-list`;
   my @domains;
 
   foreach $domain (@domainList) {
@@ -279,95 +281,95 @@ sub getRunningDomains {
 }
 
 sub listTemplates {
-	# open template path
-	# find all files called *.cfg and push onto array
-	# sort according to name
-	# list array
-	my $file;
-	my @files;
-	print "showing list of templates:\n\n";
-	opendir (DIR, $templatePath) or die "Error opening $templatePath, $!\n";
-	while ($file = readdir(DIR)) {
-		#next if ($file =~ m/^\./);
-		if ($file =~ m/^(\S+)\.template$/) {
-			push (@files, $1) ; #no whitespace, only push if called *.template
-		}
-	}
-	@files = sort {lc($a) cmp lc($b)} @files;
-	foreach $file (@files) {
-	    print "$file\n";
-	}
-	print "\n"; # ending blank line, just looks nice.
-	return;
+  # open template path
+  # find all files called *.template and push onto array
+  # sort according to name
+  # list array
+  my $file;
+  my @files;
+  print "showing list of templates:\n\n";
+  opendir (DIR, $templatePath) or die "Error opening $templatePath, $!\n";
+  while ($file = readdir(DIR)) {
+    #next if ($file =~ m/^\./);
+    if ($file =~ m/^(\S+)\.template$/) {
+      push (@files, $1) ; #no whitespace, only push if called *.template
+    }
+  }
+  @files = sort {lc($a) cmp lc($b)} @files;
+  foreach $file (@files) {
+      print "$file\n";
+  }
+  print "\n"; # ending blank line, just looks nice.
+  return;
 }
 
 sub buildCommand {
-#	get options
-	print $log "template $template is $templatePath/$template.cfg\n";
-	print $log "logfile is $logPath/$logFile\n";
-	print $log "VM's are named $vmName\[1 to $count\]\n"; #fix me: grab min/max for this
-	print $log "count is $count\n";
-#	show command
-#	print "command is:\n\t$0 -t $templatePath/$template -l $logPath/$logFile -n $vmName -c $count\n\n";
-	print $log "command is:\n\t$0 -t $templatePath/$template -l $logPath/$logFile -n $vmName -c $count\n";
-	return;
+#  get options
+  print $log "template $template is $templatePath/$template.template\n";
+  print $log "logfile is $logPath/$logFile\n";
+  print $log "VM's are named $vmName\[1 to $count\]\n"; #fix me: grab min/max for this
+  print $log "count is $count\n";
+#  show command
+#  print "command is:\n\t$0 -t $templatePath/$template -l $logPath/$logFile -n $vmName -c $count\n\n";
+  print $log "command is:\n\t$0 -t $templatePath/$template -l $logPath/$logFile -n $vmName -c $count\n";
+  return;
 }
 
 sub openLog {
-	print "Opening logfile $logPath/$logFile\n";
-	open ($log, ">", "$logPath/$logFile") or die "cannot open > $logPath/$logFile: $!";
-	return;
+  print "Opening logfile $logPath/$logFile\n";
+  open ($log, ">", "$logPath/$logFile") or die "cannot open > $logPath/$logFile: $!";
+  return;
 }
 
 sub closeLog {
-	print "Closing logfile $logPath/$logFile\n";
-	close ($log) or warn "cannot close $logPath/$logFile: $!";
-	return;
+  print "Closing logfile $logPath/$logFile\n";
+  close ($log) or warn "cannot close $logPath/$logFile: $!";
+  return;
 }
 
 sub getMaxVmId {
-	# open template dir
-	opendir(DIR, $vmPath) or die "can't open dir $vmPath: $!";
-	# read files in template path
-		my @files = readdir(DIR);
-	# check for pre-existing template+digit
-	# find max digit
-		my $maxId = 0;
-		foreach my $file (@files) {
-			if ($file =~ m/$vmName-\d+\.vm$/) {
-				my ($max) = ($file =~ m/$vmName-(\d+)\.vm$/);
-				$maxId = $max if $max > $maxId;
-			}
-		}
-		closedir DIR;
-	# increment counter to digit+1 $templatePath/$template
-	return($maxId+1);
+  # open template dir
+  opendir(DIR, $vmPath) or die "can't open dir $vmPath: $!";
+  # read files in template path
+    my @files = readdir(DIR);
+  # check for pre-existing template+digit
+  # find max digit
+    my $maxId = 0;
+    foreach my $file (@files) {
+      if ($file =~ m/$vmName-\d+\.vm$/) {
+        my ($max) = ($file =~ m/$vmName-(\d+)\.vm$/);
+        $maxId = $max if $max > $maxId;
+      }
+    }
+    closedir DIR;
+  # increment counter to digit+1 $templatePath/$template
+  return($maxId+1);
 }
 
 sub buildVm {
-	my $id = $_[0]; # $_[0] is $vmId
-	my $source = "$templatePath/$template.cfg";
-	my $target = "$vmPath/$vmName-$id.vm";
-	#print "creating VM config\n";
-	my %Config;
-	Config::Simple->import_from("$templatePath/$template.conf", \%Config) or die "Unable to read VM template config file $templatePath/$template.conf.\n";
-	print $log "creating VM config: source is $source, target is $target.\n";
-	if ( -f "$source" ) { # Check with -f only for files (no directories)
-	        open my $in,  '<', $source or die "Can't read old file: $!";
-	        open my $out, '>', $target or die "Can't write new file: $!";
-	
-	        while( <$in> ) {
-	            s/\b($Config{'VMNAME'})\b/$vmName-$id/g;
-	            print $out $_;
-	            }
-	        close $out;
-		}
-	else {
-		print "\nunable to find $source.\n\n";
-		exit 1;
-		}
+  my $id = $_[0]; # $_[0] is $vmId
+  my $source = "$templatePath/$template.template";
+  my $target = "$vmPath/$vmName-$id.vm";
+  if (defined $verbose) { print "creating VM config\n"; }
+  my %Config;
+  Config::Simple->import_from("$templatePath/$template.conf", \%Config) or die "Unable to read VM template config file $templatePath/$template.conf.\n";
+  print $log "creating VM config: source is $source, target is $target.\n";
+  if ( -f "$source" ) { # Check with -f only for files (no directories)
+    open my $in,  '<', $source or die "Can't read old file: $!";
+    open my $out, '>', $target or die "Can't write new file: $!";
+ 
+    while( <$in> ) {
+      s/\b($Config{'VMNAME'})\b/$vmName-$id/g;
+      print $out $_;
+    }
+    close $out;
+  }
+  else {
+    print "\nunable to find $source.\n\n";
+    exit 1;
+  }
 
-  #print "creating logical volumes.\n";
+  if (defined $verbose) { print "creating logical volumes.\n"; }
   print $log "creating VM LV: source is $vmVG/$Config{'VMNAME'}-disk, target is $vmName-$id-disk.\n";
   if ( -e "/dev/$vmVG/$Config{'VMNAME'}-disk" ) {
     # being lazy(?) and barfing system to logfile.out
@@ -376,13 +378,11 @@ sub buildVm {
     my $cmd3 = "/sbin/lvcreate -T -n $vmName-$id-disk -s $vmVG/$Config{'VMNAME'}-disk";
     my $cmd4 = "/usr/sbin/xl create $target";
     my $redirect = ">> $logPath/$logFile.out 2>&1";
-    system "$cmd1 $redirect ; $cmd2 $redirect";
-    system "$cmd3 $redirect &";
+    system "$cmd1 $redirect ; $cmd3 $redirect; $cmd2 $redirect &";
   }
   else {
     print "error! source disk doesn't exist at $source!\n\n";
   }
-  #system "/usr/sbin/xl create $target >> $logPath/$logFile.out 2>&1 &";
   return;
 }
 
@@ -392,32 +392,26 @@ sub doCreate {
   if (!defined $template) {
     print "\n\tERROR: please choose a template with -t or --template.\n\n";
     print $log "in CREATE: template was not defined. bailing out.\n";
-    &listTemplates();
+    listTemplates();
     return(1);
   }
 
   print "Building $count VM's\n";
-  my $id=&getMaxVmId(); # fetch the maxId+1
+  my $id=getMaxVmId(); # fetch the maxId+1
   my $counter=0; # start counter from 0, this will count from 1
   my $pm = new Parallel::ForkManager(4); 
   while ($counter < $count) {
     $pm->run_on_start($counter++);
     $pm->start and next; # do the fork 
       my $vmId=$id+$counter-1;
-      print "\tbuilding $vmName-$vmId\n";
+      if (defined $verbose) { print "\tbuilding $vmName-$vmId\n"; }
       print $log "building $vmName-$vmId\n";
-      &buildVm($vmId);
+      buildVm($vmId);
     $pm->finish; # do the exit in the child process
   }
   $pm->wait_all_children;
   return;
 }
-
-# if -h, then print long help, and quit
-if ($help) {
-  &printLongHelp();
-  exit(0);
-  }
 
 sub printLongHelp {
 print <<END;
@@ -433,10 +427,10 @@ print <<END;
  Option Switches:
   Short Versions
 
-   -t [ template name ]		: mandatory, default location is $templatePath
-   -c [ VM count ]		: default '1'
-   -n [ VM Name Base ]		: defaults to [ template name ]
-   -l [ Logfile Name ]		: log filename, default is $logPath/$0.[current date]
+   -t [ template name ]    : mandatory, default location is $templatePath
+   -c [ VM count ]    : default '1'
+   -n [ VM Name Base ]    : defaults to [ template name ]
+   -l [ Logfile Name ]    : log filename, default is $logPath/$0.[current date]
 
   Long Versions
    --help
@@ -445,8 +439,8 @@ print <<END;
    --count=[ VM count ]
    --name=[ VM Name Base ]
    --logfile=[ logfile name ]
-   --kill			: used with --stop and --delete
-   --all			: used with --stop and --start
+   --kill      : used with --stop and --delete
+   --all      : used with --stop and --start
 
  Examples:
 
