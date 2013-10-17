@@ -98,7 +98,7 @@ if (!defined $vmName) {
 }
 
 # set $count to 1 if undefined
-if (!defined $count) {
+if ((!defined $count) or ($count == 0)) {
   $count = 1;
 }
 
@@ -169,7 +169,7 @@ sub doStart {
         $pm->start and next; # do the fork
          system "/usr/sbin/xl create $vmPath/$vmName-$domain.vm >> $logPath/$logFile.out 2>&1";
         $pm->finish; # do the exit in the child process
-        unless ($all) { $count--; }
+        unless ($all==1) { $count--; }
       }
     }
   }
@@ -179,7 +179,7 @@ sub doStart {
 sub doStop {
     print "stopping up to $count domains matching \"$vmName-[n]\".\n";
     my @runningDomains = getRunningDomains();
-    if ((defined $all) or ($count > $#runningDomains+1)) {
+    if (($all == 1) or ($count > $#runningDomains+1)) {
       $count = $#runningDomains+1;
     }
     while ($count > 0) {
@@ -195,7 +195,7 @@ sub doStop {
           system "/usr/sbin/xl destroy $vmName-$domain >> $logPath/$logFile.out 2>&1";
         }
       }
-      $count = $count - 1;
+      $count--;
     }
 }
 
@@ -224,7 +224,7 @@ sub doDelete {
       my $redirect = ">> $logPath/$logFile.out 2>&1";
       system "$cmd1 ; $cmd2 $redirect &";
     }
-    unless ($all) { $count--; }
+    unless ($all==1) { $count--; }
   }
 }
 
