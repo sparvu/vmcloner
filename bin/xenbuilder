@@ -151,7 +151,7 @@ sub main {
 
   my $end = time();
   my $duration = $end - $begin;
-  print "script took $duration seconds\n";
+  print "\nscript took $duration seconds\n";
   exit(0);
 }
 
@@ -166,37 +166,49 @@ sub doStart {
       my $match = any { /$domain/ } @runningDomains;
       if ($match eq "") {
         print $log "trying to start $vmPath/$vmName-$domain.vm\n";
+        $pm->run_on_start($count--);
+        $pm->run_on_wait(sub { print "."; }, 1);
         $pm->start and next; # do the fork
          system "/usr/sbin/xl create $vmPath/$vmName-$domain.vm >> $logPath/$logFile.out 2>&1";
         $pm->finish; # do the exit in the child process
-        unless ($all==1) { $count--; }
       }
     }
   }
   $pm->wait_all_children;
+  print " done.\n";
 }
 
 sub doStop {
-    print "stopping up to $count domains matching \"$vmName-[n]\".\n";
-    my @runningDomains = getRunningDomains();
-    if (($all == 1) or ($count > $#runningDomains+1)) {
-      $count = $#runningDomains+1;
-    }
-    while ($count > 0) {
+  print "stopping up to $count domains matching \"$vmName-[n]\".\n";
+  my @runningDomains = getRunningDomains();
+  my $pm = new Parallel::ForkManager(4);
+
+  if (($all == 1) or ($count > $#runningDomains+1)) {
+    $count = $#runningDomains+1;
+  }
+  while ($count > 0) {
       if ($stop) {
         my $domain = pop(@runningDomains);
         if (defined $domain) {
-          system "/usr/sbin/xl shutdown $vmName-$domain >> $logPath/$logFile.out 2>&1";
+         $pm->run_on_start($count--);
+         $pm->run_on_wait(sub { print "."; }, 1);
+         $pm->start and next; # do the fork
+           system "/usr/sbin/xl shutdown $vmName-$domain >> $logPath/$logFile.out 2>&1";
+         $pm->finish; # do the exit in the child process
         }
       }
       elsif ($kill) {
         my $domain = pop(@runningDomains);
         if (defined $domain) {
-          system "/usr/sbin/xl destroy $vmName-$domain >> $logPath/$logFile.out 2>&1";
+         $pm->run_on_start($count--);
+         $pm->run_on_wait(sub { print "."; }, 1);
+         $pm->start and next; # do the fork
+           system "/usr/sbin/xl destroy $vmName-$domain >> $logPath/$logFile.out 2>&1";
+         $pm->finish; # do the exit in the child process
         }
       }
-      $count--;
-    }
+  }
+  print " done.\n";
 }
 
 sub doDelete {
@@ -292,19 +304,24 @@ sub listTemplates {
   # list array
   my $file;
   my @files;
-  print "showing list of templates:\n\n";
+  my @vmlist;
   opendir (DIR, $templatePath) or die "Error opening $templatePath, $!\n";
   while ($file = readdir(DIR)) {
     #next if ($file =~ m/^\./);
     if ($file =~ m/^(\S+)\.template$/) {
       push (@files, $1) ; #no whitespace, only push if called *.template
     }
+    if ($file =~ m/^(\S+)\.vm$/) {
+      push (@vmlist, $1) ; #do the same for .vm files
+    }
   }
   @files = sort {lc($a) cmp lc($b)} @files;
-  foreach $file (@files) {
-      print "$file\n";
-  }
-  print "\n"; # ending blank line, just looks nice.
+  @vmlist = sort {lc($a) cmp lc($b)} @vmlist;
+  print "\navailable templates:\n";
+  foreach $file (@files) { print "\t$file\n"; }
+  print "\nconfigured vm's:\n\n";
+  foreach $file (@vmlist) { print "$file "; }
+  print "\n";
   return;
 }
 
@@ -321,13 +338,13 @@ sub buildCommand {
 }
 
 sub openLog {
-  print "Opening logfile $logPath/$logFile\n";
+#  print "Opening logfile $logPath/$logFile\n";
   open ($log, ">", "$logPath/$logFile") or die "cannot open > $logPath/$logFile: $!";
   return;
 }
 
 sub closeLog {
-  print "Closing logfile $logPath/$logFile\n";
+  print "check logfile $logPath/$logFile\n";
   close ($log) or warn "cannot close $logPath/$logFile: $!";
   return;
 }
