@@ -201,7 +201,8 @@ sub doStop {
 
 sub doDelete {
   # edit: add ability to read $vmName.conf file and snag values from it
-  print "stopping and deleting up to $count domains matching \"$vmName-[n]\".\n";
+  if ($all == 0) { print "stopping and deleting up to $count domains matching \"$vmName-[n]\".\n"; }
+  else { print "stopping and deleting all domains matching \"$vmName-[n]\".\n"; }
   my @runningDomains = getRunningDomains();
   my @configuredDomains = getConfiguredDomains();
   if ($verbose == 1) { print "running is @runningDomains\nconfigured is @configuredDomains\n"; }
@@ -222,7 +223,7 @@ sub doDelete {
       my $cmd1 = "/sbin/lvremove -f $templateLVPath/$vmName-$domain-disk";
       my $cmd2 = "/sbin/lvremove -f $templateLVPath/$vmName-$domain-swap";
       my $redirect = ">> $logPath/$logFile.out 2>&1";
-      system "$cmd1 ; $cmd2 $redirect &";
+      system "$cmd1 $redirect ; $cmd2 $redirect &";
     }
     unless ($all==1) { $count--; }
   }
