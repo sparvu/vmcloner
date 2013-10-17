@@ -182,13 +182,14 @@ sub doStop {
   print "stopping up to $count domains matching \"$vmName-[n]\".\n";
   my @runningDomains = getRunningDomains();
   my $pm = new Parallel::ForkManager(4);
-  $pm->run_on_start($count--);
+#  $pm->run_on_start($count--);
   $pm->run_on_wait(sub { print "."; }, 1);
 
   if (($all == 1) or ($count > $#runningDomains+1)) {
     $count = $#runningDomains+1;
   }
-  while ($count > 0) {
+#  while ($count > 0) {
+  for ( ; $count > 0 ; $count--) {
       if ($stop) {
         my $domain = pop(@runningDomains);
         if (defined $domain) {
@@ -427,15 +428,12 @@ sub doCreate {
 
   print "Building $count VM's\n";
   my $id=getMaxVmId(); # fetch the maxId+1
-  my $counter=0; # start counter from 0, this will count from 1
   my $pm = new Parallel::ForkManager(4); 
-  $pm->run_on_start($counter++);
   $pm->run_on_wait(sub { print "."; }, 1);
 
-#  for ($counter=0 ; $counter < $count ; $counter++) {
-  while ($counter < $count) {
+  for (my $counter=0 ; $counter < $count ; $counter++) {
     $pm->start and next; # do the fork 
-      my $vmId=$id+$counter-1;
+      my $vmId=$id+$counter;
       if ($verbose == 1) { print "\tbuilding $vmName-$vmId\n"; }
       print $log "building $vmName-$vmId\n";
       buildVm($vmId);
