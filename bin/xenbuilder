@@ -238,15 +238,30 @@ sub doDelete {
       if (defined $domain) {
         $match = any { /$domain/ } @runningDomains;
       }
-      if (defined $match) {
+      unless ($match eq '') {
         system "/usr/sbin/xl destroy $vmName-$domain >> $logPath/$logFile.out 2>&1";
       }
       if (defined $domain) {
+        #use perl to unlink the domain config
         unlink "$templatePath/$vmName-$domain.vm";
+        #  need to use lvremove via system to unlink lv's
         my $cmd1 = "/sbin/lvremove -f $templateLVPath/$vmName-$domain-disk";
         my $cmd2 = "/sbin/lvremove -f $templateLVPath/$vmName-$domain-swap";
         my $redirect = ">> $logPath/$logFile.out 2>&1";
-        system "$cmd1 $redirect ; $cmd2 $redirect &";
+        my $command;
+
+	if (-e "$templateLVPath/$vmName-$domain-disk") {
+          $command .= "/sbin/lvremove -f $templateLVPath/$vmName-$domain-disk";
+          $command .= $redirect;
+        }
+	if (-e "$templateLVPath/$vmName-$domain-swap") {
+          $command .= " ; /sbin/lvremove -f $templateLVPath/$vmName-$domain-swap";
+          $command .= $redirect;
+        }
+	unless ($command eq '') {
+          #system "$command &";
+          system "$command";
+        }
       }
       # unless ($all==1) { $count--; }
     $pm->finish; # do the exit in the child process
