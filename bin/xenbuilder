@@ -162,6 +162,10 @@ sub doStart {
   my @configuredDomains = getConfiguredDomains();
   my $pm = new Parallel::ForkManager($forks);
 
+  if ($all == 1) {
+    $count = $#configuredDomains+1;
+  }
+
   foreach my $domain (@configuredDomains) {
     if ($count > 0) {
       my $match = any { /$domain/ } @runningDomains;
