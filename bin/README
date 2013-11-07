@@ -25,6 +25,7 @@ in ./etc
         [vm-id].vm		running xen domain from xenbuilder
 
 ubuntu packages needed:
+	thin-provisioning-tools
 	libconfig-simple-perl
 	libparallel-forkmanager-perl
 	liblist-moreutils-perl
@@ -40,9 +41,19 @@ necessary configurations:
 ubuntu system options:
 	add atime to /, /boot, /opt
 
+add to /etc/rc.local (And set to 755)
+/etc/rc.local:
+	/sbin/iptables --table nat --append POSTROUTING --out-interface eth0 -j MASQUERADE
+	/sbin/iptables --append FORWARD --in-interface bridge0 -j ACCEPT
+
+	mkdir -p /var/run/xen
+
+
+
+
 TODO:
 
-* Stabilize options (--start,--stop,--create,--delete,--templates)
-* fix thin handling via config options
+DONE * Stabilize options (--start,--stop,--create,--delete,--templates)
+DONE * fix thin handling via config options
 * work out why/how xen-4.x pygrub works properly and/or automate kernel config for templates
-* fix templates not to be .cfg but .template
+DONE * fix templates not to be .cfg but .template

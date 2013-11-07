@@ -1,46 +1,34 @@
-#
-# Configuration file for the Xen instance precise-196m, created
-# by xen-tools 4.3.1 on Mon Aug 26 20:29:00 2013.
-#
+#  template file for the Xen template 'precise'
+#  uses precise.conf to set the values in CAPITALS
 
-#
-#  Kernel + memory size
-#
+#  Kernel + memory/cpu
 
-bootloader = '/usr/lib/xen-4.2/bin/pygrub'
+#  uncomment kernel/initrd or bootloader depending on usage
+#kernel = 'KERNEL'
+#initrd = 'INITRD'
+bootloader = 'LOADER'
 
-vcpus       = '1'
-memory      = '128'
+#  memory/cpu
+vcpus       = 'CPU'
+memory      = 'MEM'
 
-#
 #  Disk device(s).
-#
 root        = '/dev/xvda2 ro'
 disk        = [
-                  'phy:/dev/VG01/precise-disk,xvda2,w',
-                  'phy:/dev/VG01/precise-swap,xvda1,w',
+                  'phy:PATH/VMNAME-disk,xvda2,w'
               ]
+#  remember to add a "," on the end of the disk entry above if you have swap
+#  'phy:PATH/VMNAME-swap,xvda1,w'
 
+#  xendomain name
+name        = 'VMNAME'
 
-#
-#  Physical volumes
-#
-
-
-#
-#  Hostname
-#
-name        = 'precise'
-
-#
 #  Networking
-#
 dhcp        = 'dhcp'
-vif         = [ 'bridge=bridge0' ]
+vif         = [ 'bridge=BRIDGE1' ]
+# remember to add a second line for more than one vif (two supported)
 
-#
 #  Behaviour
-#
 on_poweroff = 'destroy'
 on_reboot   = 'restart'
 on_crash    = 'restart'

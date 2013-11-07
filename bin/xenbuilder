@@ -34,6 +34,7 @@ my $vmImagePath="$basePath/$Config{'imagePath'}";
 my $logPath="$basePath/$Config{'logPath'}";
 my $vmVG=$Config{'sourceVG'};
 my $vmLV=$Config{'sourceLV'};
+my $forks=$Config{'forks'};
 
 # derived from %Config
 my $templateLVPath="/dev/$vmVG";
@@ -124,7 +125,7 @@ sub main {
   if ($create) {
     openLog();
     doCreate();
-    doStart();
+    #doStart();
     closeLog();
   }
   if ($start) {
@@ -159,7 +160,7 @@ sub doStart {
   print "starting up to $count domains matching \"$vmName-[n]\".\n";
   my @runningDomains = getRunningDomains();
   my @configuredDomains = getConfiguredDomains();
-  my $pm = new Parallel::ForkManager(4);
+  my $pm = new Parallel::ForkManager($forks);
 
   foreach my $domain (@configuredDomains) {
     if ($count > 0) {
@@ -181,7 +182,7 @@ sub doStart {
 sub doStop {
   print "stopping up to $count domains matching \"$vmName-[n]\".\n";
   my @runningDomains = getRunningDomains();
-  my $pm = new Parallel::ForkManager(4);
+  my $pm = new Parallel::ForkManager($forks);
 #  $pm->run_on_start($count--);
   $pm->run_on_wait(sub { print "."; });
 
@@ -217,7 +218,7 @@ sub doDelete {
 
   my @runningDomains = getRunningDomains();
   my @configuredDomains = getConfiguredDomains();
-  my $pm = new Parallel::ForkManager(4);
+  my $pm = new Parallel::ForkManager($forks);
 
   if ($all == 1) {
     $count = $#configuredDomains+1;
@@ -392,30 +393,71 @@ sub buildVm {
     open my $in,  '<', $source or die "Can't read old file: $!";
     open my $out, '>', $target or die "Can't write new file: $!";
  
-    while( <$in> ) {
-      s/\b($Config{'VMNAME'})\b/$vmName-$id/g;
-      print $out $_;
-    }
-    close $out;
+#    while( <$in> ) {
+#      s/\b($Config{'vmname'})\b/$vmName-$id/g;
+#      print $out $_;
+#    }
+#    close $out;
+#  }
+#  else {
+#    print "\nunable to find $source.\n\n";
+#    exit 1;
+#  }
+
+  my @configFile = <$in>;
+
+  for (@configFile) {
+    s/\bVMNAME\b/$vmName-$id/g;
+    s/\bLOADER\b/$Config{'loader'}/g;
+    s/\bKERNEL\b/$Config{'kernel'}/g;
+    s/\bINITRD\b/$Config{'initrd'}/g;
+    s/\bCPU\b/$Config{'cpu'}/g;
+    s/\bMEM\b/$Config{'mem'}/g;
+    s/\bBRIDGE1\b/$Config{'bridge1'}/g;
+    s/\bBRIDGE2\b/$Config{'bridge2'}/g;
+    s/\bPATH\b/$templateLVPath/g;
   }
-  else {
-    print "\nunable to find $source.\n\n";
-    exit 1;
+
+  print $out @configFile;
+  close $out;
   }
 
   if ($verbose == 1) { print "creating logical volumes.\n"; }
-  print $log "creating VM LV: source is $vmVG/$Config{'VMNAME'}-disk, target is $vmName-$id-disk.\n";
-  if ( -e "/dev/$vmVG/$Config{'VMNAME'}-disk" ) {
-    # being lazy(?) and barfing system to logfile.out
-    my $cmd1 = "/sbin/lvcreate -V256M -n $vmName-$id-swap -T $vmVG/thinpool";
+  print $log "creating VM LV: source is $vmVG/$Config{'vmname'}-disk, target is $vmName-$id-disk.\n";
+  if ( -e "$templateLVPath/$Config{'vmname'}-disk" ) {
+
+    # swap file creation
+    my $cmd1 = "/sbin/lvcreate -V$Config{'swap'} -n $vmName-$id-swap -T $vmVG/thinpool";
     my $cmd2 = "/sbin/mkswap -f /dev/$vmVG/$vmName-$id-swap";
-    my $cmd3 = "/sbin/lvcreate -T -n $vmName-$id-disk -s $vmVG/$Config{'VMNAME'}-disk";
+
+    # data file creation
+    my $cmd3Thin = "/sbin/lvcreate -T -n $vmName-$id-disk -s $vmVG/$Config{'vmname'}-disk";
+    my $cmd3Fat  = "/sbin/lvcreate -n $vmName-$id-disk -s $vmVG/$Config{'vmname'}-disk -L 256M";
+
+    # start the VM
     my $cmd4 = "/usr/sbin/xl create $target";
+
     my $redirect = ">> $logPath/$logFile.out 2>&1";
-    system "$cmd1 $redirect ; $cmd3 $redirect; $cmd2 $redirect &";
+
+    # do the commands
+    # build swap if it's set
+    unless ($Config{'swap'} eq 'off') {
+      system "$cmd1 $redirect ; $cmd2 $redirect &";
+    }
+
+    unless ($Config{'thinpool'} eq '') {
+      #system "$cmd3Thin $redirect &";
+      system "$cmd3Thin $redirect";
+    }
+    else {
+      #system "$cmd3Fat $redirect &";
+      system "$cmd3Fat $redirect";
+    }
+
   }
   else {
-    print "error! source disk doesn't exist at $source!\n\n";
+    print "error! source LV doesn't exist: $!\n";
+    exit(1);
   }
   return;
 }
@@ -432,7 +474,7 @@ sub doCreate {
 
   print "Building $count VM's\n";
   my $id=getMaxVmId(); # fetch the maxId+1
-  my $pm = new Parallel::ForkManager(4); 
+  my $pm = new Parallel::ForkManager($forks); 
   $pm->run_on_wait(sub { print "."; }, 1);
 
   for (my $counter=0 ; $counter < $count ; $counter++) {
