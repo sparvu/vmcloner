@@ -25,6 +25,7 @@ in ./etc
         [vm-id].vm		running xen domain from xenbuilder
 
 ubuntu packages needed:
+	git-extras		git-ignore
 	thin-provisioning-tools
 	libconfig-simple-perl
 	libparallel-forkmanager-perl
