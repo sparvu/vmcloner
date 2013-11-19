@@ -75,7 +75,9 @@ in _./etc_
 * libconfig-simple-perl
 * libparallel-forkmanager-perl
 * liblist-moreutils-perl
-
+* libxen-4.3
+* xen-tools
+* xen-hypervisor-4.3
 
 ## useful ubuntu packages
 * git-extras
