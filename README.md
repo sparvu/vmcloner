@@ -14,14 +14,10 @@ own flavour of markdown.
 
 ## default paths
 
-<TABLE>
-<TR>
-<TD></TD><TD></TD>
-</TR>
-</TABLE>
+* base is _/opt/xenbuilder_
+* subdirectories:
 
 <TABLE>
-<TH>/opt/xenbuilder</TH>
 <TR>
 <TD>./bin</TD><TD>binaries and scripts</TD>
 </TR>
