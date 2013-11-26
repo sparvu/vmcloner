@@ -199,7 +199,12 @@ sub doStop {
         my $domain = pop(@runningDomains);
         if (defined $domain) {
           $pm->start and next; # do the fork
-            system "/usr/sbin/xl shutdown $vmName-$domain >> $logPath/$logFile.out 2>&1";
+            if ($kill == 1) {
+              system "/usr/sbin/xl destroy $vmName-$domain >> $logPath/$logFile.out 2>&1";
+            }
+            else {
+              system "/usr/sbin/xl shutdown $vmName-$domain >> $logPath/$logFile.out 2>&1";
+            }
           $pm->finish; # do the exit in the child process
         }
       }

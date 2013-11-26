@@ -108,4 +108,5 @@ in _./etc_
 - [x] fix thin handling via config options
 - [x] work out why/how xen-4.x pygrub works properly and/or automate kernel config for templates
 - [x] fix templates not to be .cfg but .template
+- [] integrate pypxeboot from http://grid.ie/pypxeboot/ (v.0.0.3)
 
