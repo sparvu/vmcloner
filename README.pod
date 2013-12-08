@@ -15,6 +15,19 @@ system calls where not.
 This readme file is designed to be read on github. It is written using github's
 own flavour of markdown.
 
+=head1 Pre-Requiosites
+
+* create the XEN Volume Group
+  * set $vmVG (eg: VG01, XENVG) in vmcloner.conf
+* create /dev/$vmVG/thinpool
+  * create this LV as a thin pool (e.g. 250G) for VM's
+  * ```example code here```
+* create /dev/$vmVG/OPT for vmcloner to live in
+  * mount on /opt/vmcloner (e.g. 250G)
+* create the vm source lvol's using dd or ```your favourite tool here```
+  * eg: precise-disk from precise-disk.img
+
+
 =head1 COMPONENTS
 
 vmcloner is avilable as a standalone Perl5 based script and some other utilities
@@ -67,6 +80,7 @@ libparallel-forkmanager-perl liblist-moreutils-perl libxen-4.3 xen-tools xen-hyp
 
 
 =head2 Optional packages
+
 Optional you will need the following packages: git-extras xen-tools
 If you wish to use xen-create-image (check create_image.sh) debootstrap
 
@@ -95,23 +109,8 @@ mkdir -p /var/run/xen
 
 =head1 FREE SOFTWARE LICENSE
 
-Copyright (c) 2013 SystemDataRecorder
-
- This program is free software; you can redistribute it and/or
- modify it under the terms of the GNU General Public License
- as published by the Free Software Foundation; either version 2
- of the License, or (at your option) any later version.
-
- This program is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
-
- You should have received a copy of the GNU General Public License
- along with this program; if not, write to the Free Software Foundation,
- Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-
- (http://www.gnu.org/copyleft/gpl.html)
+This is released under Free Software License GNU GPL V2
+http://www.gnu.org/copyleft/gpl.html
 
 
 =head1 TODO
