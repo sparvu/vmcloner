@@ -1,8 +1,8 @@
 =head1 NAME
 
-VMCloner - Automation Test Utility
+vmcloner - Virtual Machine Cloner, an automation test utility
 
-=head1 CONTEXT
+=head1 DESCRIPTION
 
 vmcloner is a script designed to help you create, start, stop and delete mass numbers of
 virtual machines, Xen or KVM based. It is 'mostly automated', meaning that you have to 
@@ -16,6 +16,9 @@ This readme file is designed to be read on github. It is written using github's
 own flavour of markdown.
 
 =head1 COMPONENTS
+
+vmcloner is avilable as a standalone Perl5 based script and some other utilities
+needed to get started in VM creation and configuration.
 
 =head2 Directory Structure
 
