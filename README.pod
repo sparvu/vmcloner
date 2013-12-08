@@ -74,23 +74,38 @@ If you wish to use xen-create-image (check create_image.sh) debootstrap
 
 =head2 Necessary configurations
 
-* create the XEN Volume Group
-  * set $vmVG (eg: VG01, XENVG) in vmcloner.conf
-* create /dev/$vmVG/thinpool
-  * create this LV as a thin pool (e.g. 250G) for VM's
-  * ```example code here```
-* create /dev/$vmVG/OPT for vmcloner to live in
-  * mount on /opt/vmcloner (e.g. 250G)
-* create the vm source lvol's using dd or ```your favourite tool here```
-  * eg: precise-disk from precise-disk.img
+=over
 
+=item create the XEN Volume Group
+
+set $vmVG (eg: VG01, XENVG) in vmcloner.conf
+
+=item create /dev/$vmVG/thinpool
+
+=item  create this LV as a thin pool (e.g. 250G) for VM's
+
+example code here
+
+=item create /dev/$vmVG/OPT for vmcloner to live in
+
+=item mount on /opt/vmcloner (e.g. 250G)
+
+=item create the vm source lvol's using dd or your favourite tool here
+
+eg: precise-disk from precise-disk.img
+
+=back
 
 =head2 ubuntu system options
 
-* add atime to /, /boot, /opt
-* add the following to /etc/rc.local (And set to 755)
+add atime to /, /boot, /opt
+
+add the following to /etc/rc.local (And set to 755)
+
 /sbin/iptables --table nat --append POSTROUTING --out-interface eth0 -j MASQUERADE  
+
 /sbin/iptables --append FORWARD --in-interface bridge0 -j ACCEPT  
+
 mkdir -p /var/run/xen  
 
 
