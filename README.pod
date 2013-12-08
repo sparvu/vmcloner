@@ -22,7 +22,7 @@ needed to get started in VM creation and configuration.
 
 =head2 Directory Structure
 
-=over
+=over 5
 
 =item base path
 
