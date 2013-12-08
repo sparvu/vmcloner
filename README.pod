@@ -71,20 +71,18 @@ in _./etc_
 </TABLE>
 
 
-=head2 required ubuntu packages
+=head2 required Ubuntu packages
 
 thin-provisioning-tools libconfig-simple-perl libparallel-forkmanager-perl
 liblist-moreutils-perl libxen-4.3 xen-tools xen-hypervisor-4.3
 
 
-=head2 useful ubuntu packages
+=head2 useful Ubuntu packages
 
-* git-extras
-  * for git-ignore
-* xen-tools
-  * if you wish to use xen-create-image (check create_image.sh)
-* debootstrap
-  * if you wish to use automated VM creation
+git-extras xen-tools
+
+If you wish to use xen-create-image (check create_image.sh)
+debootstrap
 
 =head2 necessary configurations
 
