@@ -72,13 +72,13 @@ in _./etc_
 
 
 =head2 required ubuntu packages
-* thin-provisioning-tools
-* libconfig-simple-perl
-* libparallel-forkmanager-perl
-* liblist-moreutils-perl
-* libxen-4.3
-* xen-tools
-* xen-hypervisor-4.3
+thin-provisioning-tools
+libconfig-simple-perl
+libparallel-forkmanager-perl
+liblist-moreutils-perl
+libxen-4.3
+xen-tools
+xen-hypervisor-4.3
 
 =head2 useful ubuntu packages
 * git-extras
