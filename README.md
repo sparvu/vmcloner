@@ -1,4 +1,4 @@
-# VMCloner README
+# vmcloner - Virtual Machine Cloner, an automation test utility
 
 ## Overview
 
