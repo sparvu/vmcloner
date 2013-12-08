@@ -72,6 +72,7 @@ in _./etc_
 
 
 =head2 required ubuntu packages
+
 thin-provisioning-tools
 libconfig-simple-perl
 libparallel-forkmanager-perl
@@ -80,7 +81,9 @@ libxen-4.3
 xen-tools
 xen-hypervisor-4.3
 
+
 =head2 useful ubuntu packages
+
 * git-extras
   * for git-ignore
 * xen-tools
@@ -89,6 +92,7 @@ xen-hypervisor-4.3
   * if you wish to use automated VM creation
 
 =head2 necessary configurations
+
 * create the XEN Volume Group
   * set $vmVG (eg: VG01, XENVG) in vmcloner.conf
 * create /dev/$vmVG/thinpool
@@ -99,13 +103,15 @@ xen-hypervisor-4.3
 * create the vm source lvol's using dd or ```your favourite tool here```
   * eg: precise-disk from precise-disk.img
 
+
 =head2 ubuntu system options
+
 * add atime to /, /boot, /opt
 * add the following to /etc/rc.local (And set to 755)
-
 /sbin/iptables --table nat --append POSTROUTING --out-interface eth0 -j MASQUERADE  
 /sbin/iptables --append FORWARD --in-interface bridge0 -j ACCEPT  
 mkdir -p /var/run/xen  
+
 
 =head1 TODO
 
