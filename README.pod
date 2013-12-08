@@ -19,8 +19,8 @@ own flavour of markdown.
 
 =head2 default paths
 
-* base is _/opt/vmcloner_
-* subdirectories:
+base is _/opt/vmcloner_
+subdirectories:
 
 <TABLE>
 <TR>
@@ -37,9 +37,9 @@ own flavour of markdown.
 </TR>
 </TABLE>
 
-## useful files
+useful files
 
-* in _./bin_  
+in _./bin_  
 
 <TABLE>
 <TR>
@@ -71,7 +71,7 @@ in _./etc_
 </TABLE>
 
 
-## required ubuntu packages
+=head2 required ubuntu packages
 * thin-provisioning-tools
 * libconfig-simple-perl
 * libparallel-forkmanager-perl
@@ -80,7 +80,7 @@ in _./etc_
 * xen-tools
 * xen-hypervisor-4.3
 
-## useful ubuntu packages
+=head2 useful ubuntu packages
 * git-extras
   * for git-ignore
 * xen-tools
@@ -88,7 +88,7 @@ in _./etc_
 * debootstrap
   * if you wish to use automated VM creation
 
-## necessary configurations
+=head2 necessary configurations
 * create the XEN Volume Group
   * set $vmVG (eg: VG01, XENVG) in vmcloner.conf
 * create /dev/$vmVG/thinpool
@@ -99,13 +99,13 @@ in _./etc_
 * create the vm source lvol's using dd or ```your favourite tool here```
   * eg: precise-disk from precise-disk.img
 
-## ubuntu system options:
+=head2 ubuntu system options
 * add atime to /, /boot, /opt
 * add the following to /etc/rc.local (And set to 755)
 
-        /sbin/iptables --table nat --append POSTROUTING --out-interface eth0 -j MASQUERADE  
-        /sbin/iptables --append FORWARD --in-interface bridge0 -j ACCEPT  
-        mkdir -p /var/run/xen  
+/sbin/iptables --table nat --append POSTROUTING --out-interface eth0 -j MASQUERADE  
+/sbin/iptables --append FORWARD --in-interface bridge0 -j ACCEPT  
+mkdir -p /var/run/xen  
 
 =head1 TODO
 
