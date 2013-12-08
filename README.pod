@@ -21,13 +21,17 @@ own flavour of markdown.
 
 =item default paths
 
-base _/opt/vmcloner_
+base: /opt/vmcloner
 
 subdirectories:
-bin/ binaries and scripts
-etc templates and config files
-images ISO's and saved images
-logs logs
+
+bin/ - binaries and scripts
+
+etc - templates and config files
+
+images - ISO's and saved images
+
+logs - logs
 
 useful files
 
