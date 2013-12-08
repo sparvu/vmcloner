@@ -15,19 +15,6 @@ system calls where not.
 This readme file is designed to be read on github. It is written using github's
 own flavour of markdown.
 
-=head1 Pre-Requiosites
-
-* create the XEN Volume Group
-  * set $vmVG (eg: VG01, XENVG) in vmcloner.conf
-* create /dev/$vmVG/thinpool
-  * create this LV as a thin pool (e.g. 250G) for VM's
-  * ```example code here```
-* create /dev/$vmVG/OPT for vmcloner to live in
-  * mount on /opt/vmcloner (e.g. 250G)
-* create the vm source lvol's using dd or ```your favourite tool here```
-  * eg: precise-disk from precise-disk.img
-
-
 =head1 COMPONENTS
 
 vmcloner is avilable as a standalone Perl5 based script and some other utilities
