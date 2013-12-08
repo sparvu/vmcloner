@@ -19,19 +19,25 @@ own flavour of markdown.
 
 =over
 
-=item default paths
+=item base path
 
-base: /opt/vmcloner
+/opt/vmcloner
 
-subdirectories:
+=item bin
 
-bin/ - binaries and scripts
+binaries and scripts
 
-etc - templates and config files
+=item etc
 
-images - ISO's and saved images
+templates and config files
 
-logs - logs
+=item images
+
+ISO's and saved images
+
+=item logs
+
+logs
 
 useful files
 
