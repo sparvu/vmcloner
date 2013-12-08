@@ -55,20 +55,8 @@ logs
 vmcloner script
 
 =item create_image.sh
+
 example commands for xen-create-image
-
-
-#<TABLE>
-#<TR>
-#<TD>template.template</TD><TD>xen config file (some are templates)</TD>
-#</TR>
-#<TR>
-#<TD>template.conf</TD><TD>config file to enable scripting of template .cfg files</TD>
-#</TR>
-#<TR>
-#<TD>vmname-id.vm</TD><TD>running xen domain from vmcloner</TD>
-#</TR>
-#</TABLE>
 
 =back
 
