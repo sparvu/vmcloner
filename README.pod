@@ -41,55 +41,46 @@ ISO's and saved images
 
 logs
 
-useful files
+=back
 
-in _./bin_  
+=head2 Utilities
 
-<TABLE>
-<TR>
-<TD>vmcloner</TD><TD>vmcloner script</TD>
-</TR>
-<TR>
-<TD>vmcloner.conf</TD><TD>vmcloner script config file</TD>
-</TR>
-<TR>
-<TD>create_image.sh</TD><TD>example commands for xen-create-image</TD>
-</TR>
-<TR>
-<TD>README</TD><TD>this file</TD>
-</TR>
-</TABLE>
+=over
 
-in _./etc_
+=item vmcloner
 
-<TABLE>
-<TR>
-<TD>template.template</TD><TD>xen config file (some are templates)</TD>
-</TR>
-<TR>
-<TD>template.conf</TD><TD>config file to enable scripting of template .cfg files</TD>
-</TR>
-<TR>
-<TD>vmname-id.vm</TD><TD>running xen domain from vmcloner</TD>
-</TR>
-</TABLE>
+vmcloner script
+
+=item create_image.sh
+example commands for xen-create-image
+
+
+#<TABLE>
+#<TR>
+#<TD>template.template</TD><TD>xen config file (some are templates)</TD>
+#</TR>
+#<TR>
+#<TD>template.conf</TD><TD>config file to enable scripting of template .cfg files</TD>
+#</TR>
+#<TR>
+#<TD>vmname-id.vm</TD><TD>running xen domain from vmcloner</TD>
+#</TR>
+#</TABLE>
 
 =back
 
-=head2 required Ubuntu packages
+=head2 Required packages
 
-thin-provisioning-tools libconfig-simple-perl libparallel-forkmanager-perl
-liblist-moreutils-perl libxen-4.3 xen-tools xen-hypervisor-4.3
+These are the required Ubuntu based packages: thin-provisioning-tools libconfig-simple-perl 
+libparallel-forkmanager-perl liblist-moreutils-perl libxen-4.3 xen-tools xen-hypervisor-4.3
 
 
-=head2 useful Ubuntu packages
+=head2 Optional packages
+Optional you will need the following packages: git-extras xen-tools
+If you wish to use xen-create-image (check create_image.sh) debootstrap
 
-git-extras xen-tools
 
-If you wish to use xen-create-image (check create_image.sh)
-debootstrap
-
-=head2 necessary configurations
+=head2 Necessary configurations
 
 * create the XEN Volume Group
   * set $vmVG (eg: VG01, XENVG) in vmcloner.conf
