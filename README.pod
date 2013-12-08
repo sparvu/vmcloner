@@ -17,6 +17,8 @@ own flavour of markdown.
 
 =head1 COMPONENTS
 
+=head2 Directory Structure
+
 =over
 
 =item base path
