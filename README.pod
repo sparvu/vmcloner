@@ -17,25 +17,17 @@ own flavour of markdown.
 
 =head1 COMPONENTS
 
-=head2 default paths
+=over
 
-base is _/opt/vmcloner_
+=item default paths
+
+base _/opt/vmcloner_
+
 subdirectories:
-
-<TABLE>
-<TR>
-<TD>./bin</TD><TD>binaries and scripts</TD>
-</TR>
-<TR>
-<TD>./etc</TD><TD>templates and config files</TD>
-</TR>
-<TR>
-<TD>./images</TD><TD>ISO's and saved images</TD>
-</TR>
-<TR>
-<TD>./logs</TD><TD>logs</TD>
-</TR>
-</TABLE>
+bin/ binaries and scripts
+etc templates and config files
+images ISO's and saved images
+logs logs
 
 useful files
 
@@ -70,6 +62,7 @@ in _./etc_
 </TR>
 </TABLE>
 
+=back
 
 =head2 required Ubuntu packages
 
