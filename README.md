@@ -1,20 +1,21 @@
-# Xenbuilder README
+# VMCloner README
 
 ## Overview
 
-Xenbuilder is a script designed to help you create, start, stop and delete mass numbers of xen
-VM's. It is 'mostly automated', meaning that you have to do the groundwork first, and then
-your server will work with this script with minimal interference.
+vmcloner is a script designed to help you create, start, stop and delete mass numbers of
+virtual machines, Xen or KVM based. It is 'mostly automated', meaning that you have to 
+do the groundwork first, and then your server will work with this script with minimal 
+interference.
 
-It is written in perl and makes extensive use of perl modules where available, and system calls
-where not.
+It is written in perl and makes extensive use of perl modules where available, and 
+system calls where not.
 
 This readme file is designed to be read on github. It is written using github's
 own flavour of markdown.
 
 ## default paths
 
-* base is _/opt/xenbuilder_
+* base is _/opt/vmcloner_
 * subdirectories:
 
 <TABLE>
@@ -38,10 +39,10 @@ own flavour of markdown.
 
 <TABLE>
 <TR>
-<TD>xenbuilder</TD><TD>xenbuilder script</TD>
+<TD>vmcloner</TD><TD>vmcloner script</TD>
 </TR>
 <TR>
-<TD>xenbuilder.conf</TD><TD>xenbuilder script config file</TD>
+<TD>vmcloner.conf</TD><TD>vmcloner script config file</TD>
 </TR>
 <TR>
 <TD>create_image.sh</TD><TD>example commands for xen-create-image</TD>
@@ -61,7 +62,7 @@ in _./etc_
 <TD>template.conf</TD><TD>config file to enable scripting of template .cfg files</TD>
 </TR>
 <TR>
-<TD>vmname-id.vm</TD><TD>running xen domain from xenbuilder</TD>
+<TD>vmname-id.vm</TD><TD>running xen domain from vmcloner</TD>
 </TR>
 </TABLE>
 
@@ -85,12 +86,12 @@ in _./etc_
 
 ## necessary configurations
 * create the XEN Volume Group
-  * set $vmVG (eg: VG01, XENVG) in xenbuilder.conf
+  * set $vmVG (eg: VG01, XENVG) in vmcloner.conf
 * create /dev/$vmVG/thinpool
   * create this LV as a thin pool (e.g. 250G) for VM's
   * ```example code here```
-* create /dev/$vmVG/OPT for xenbuilder to live in
-  * mount on /opt/xenbuilder (e.g. 250G)
+* create /dev/$vmVG/OPT for vmcloner to live in
+  * mount on /opt/vmcloner (e.g. 250G)
 * create the vm source lvol's using dd or ```your favourite tool here```
   * eg: precise-disk from precise-disk.img
 
