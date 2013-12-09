@@ -1,4 +1,4 @@
-# VMCloner README
+# vmcloner - automation test utility
 
 ## Overview
 
