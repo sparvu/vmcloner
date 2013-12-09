@@ -22,7 +22,7 @@ needed to get started in VM creation and configuration.
 
 =head2 Directory Structure
 
-=over 5
+=over
 
 =item base path
 
@@ -78,15 +78,15 @@ If you wish to use xen-create-image (check create_image.sh) debootstrap
 
 =item create the XEN Volume Group
 
-set $vmVG (eg: VG01, XENVG) in vmcloner.conf
+set sourceVG (eg: VG01, XENVG) in vmcloner.conf
 
-=item create /dev/$vmVG/thinpool
+=item create /dev/sourceVG/thinpool
 
 =item  create this LV as a thin pool (e.g. 250G) for VM's
 
-example code here
+...example code here
 
-=item create /dev/$vmVG/OPT for vmcloner to live in
+=item create /dev/sourceVG/OPT for vmcloner to live in
 
 =item mount on /opt/vmcloner (e.g. 250G)
 
