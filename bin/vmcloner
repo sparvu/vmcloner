@@ -1,7 +1,28 @@
 #!/usr/bin/perl
+
+# COPYRIGHT: Copyright (c) 2013 SystemDataRecorder
+#
+#  This program is free software; you can redistribute it and/or
+#  modify it under the terms of the GNU General Public License
+#  as published by the Free Software Foundation; either version 2
+#  of the License, or (at your option) any later version.
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with this program; if not, write to the Free Software Foundation,
+#  Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+#
+#  (http://www.gnu.org/copyleft/gpl.html)
+
+
 use strict;
 use warnings;
 use POSIX qw(strftime);
+use Getopt::Std;
 use Getopt::Long;
 use File::Copy;
 use Config::Simple;
@@ -10,19 +31,62 @@ use Parallel::ForkManager;
 
 
 
+#
+# Command line arguments
+#
+usage() if defined $ARGV[0] and $ARGV[0] eq "--help";
+getopts('hr:vV') or usage();
+usage()    if defined $main::opt_h;
+revision() if defined $main::opt_V;
+
+# verbose flag
+my $verbose_flag = defined $main::opt_v ? $main::opt_v : 0;
+
+
+#
+#  Variables
+#
+$main::opt_h = 0;
+$main::opt_v = 0;
+$main::opt_V = 0;
+local $| = 1;
+
+
+# ######### #
+# MAIN BODY #
+# ######### #
 
 
 # if @ARGV is empty, show usage and quit
-if ($#ARGV < 0) {
-  print "usage: $0 [-h] || [--help]\n";
-  print "example: $0 --create -t [template] -c [count] -n [name] -l [logfile]\n";
-  exit(0);
-}
+#if ($#ARGV < 0) {
+#  print "usage: $0 [-h] || [--help]\n";
+#  print "example: $0 --create -t [template] -c [count] -n [name] -l [logfile]\n";
+#  exit(0);
+#}
 
 if (( $< != 0 ) or ( $> != 0)) {
   print "Please run this script as user root.\n";
   exit(0);
 }
+
+# Command line arguments
+my $cmd_arg = shift;
+
+## command modes
+my $cmd_mode = 0;
+
+# check on internal commands
+given($cmd_arg) {
+
+    # kvm hypervisor
+    when('kvm') {  }
+
+    # xen hypervisor
+    when('run') { print "run command mode"; }
+
+    default { usage(); }
+}    
+
 
 # import config
 # done here because it should die if the conf file isn't available
@@ -113,9 +177,73 @@ if (!defined $logFile) {
 
 my $log; # this will hold the log file descriptor
 
+
+
 ###
-# subroutines
+# Subroutines
 ###
+
+sub usage {
+    print STDERR <<END;
+USAGE: vmcloner [OPTIONS] kvm | xen
+
+OPTIONS:
+  -s start
+  -t terminate
+  -d delete
+  -c create
+
+  -n number, count of VMs
+  -K kill all, perform stop and delete
+  -A mass restart, perform stop and start
+
+  -T template name
+  -N name of VM
+
+  -l logfile
+  -p print 
+  -h help
+  -v verbose
+  -V revision                        # revision information
+
+COMMAND:
+  kvm                                # use KVM hypervisor
+  xen                                # use XEN hypervisor
+  
+ eg, sdrdroid test                   # self-test all recorders
+     sdrdroid -r sysrec test         # self-test sysrec
+     sdrdroid -r sysrec,cpurec test  # self-test sysrec,cpurec
+
+NOTES:
+sdrdroid - A SDR Utility
+END
+    exit 0;
+
+
+drclone [OPTIONS] xen | kvm
+  OPTIONS:
+       -s start
+       -t terminate
+       -d delete
+       -c create
+
+       -n number, count of VMs
+       -K kill all, perform stop and delete
+       -A mass restart, perform stop and start
+
+       -T template name
+       -N name of VM
+
+       -l logfile
+       -p print 
+       -h help
+       -V version
+       -v verbose
+
+
+
+
+
 
 sub main {
   if ($help) {
