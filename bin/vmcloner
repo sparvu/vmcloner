@@ -186,64 +186,39 @@ my $log; # this will hold the log file descriptor
 sub usage {
     print STDERR <<END;
 USAGE: vmcloner [OPTIONS] kvm | xen
-
 OPTIONS:
-  -s start
-  -t terminate
-  -d delete
-  -c create
+  -s start                           # start all VMs
+  -t terminate                       # terminate all VMs
+  -d delete                          # delete VMs configuration
+  -c create                          # create VMs storage configuration
 
-  -n number, count of VMs
-  -K kill all, perform stop and delete
-  -A mass restart, perform stop and start
+  -n number                          # count of VMs
+  -k kill all                        # kill all VMs, execute stop
+  -K Kill all                        # kill all VMs, execute stop and delete
+  -R restart all                     # restart all VMs, execute stop and start
 
   -T template name
   -N name of VM
 
   -l logfile
   -p print 
-  -h help
-  -v verbose
+  -h help                            # help information
+  -v verbose                         # verbose information
   -V revision                        # revision information
 
 COMMAND:
   kvm                                # use KVM hypervisor
   xen                                # use XEN hypervisor
   
- eg, sdrdroid test                   # self-test all recorders
-     sdrdroid -r sysrec test         # self-test sysrec
-     sdrdroid -r sysrec,cpurec test  # self-test sysrec,cpurec
+ eg, xenbuilder -c -T deb71_64 -n 50
+     xenbuilder -s -n 50 -N ubuntu
 
 NOTES:
-sdrdroid - A SDR Utility
+vmcloner - automation tool utility, will create, from a named template, 
+the requested number of virtual machines as fast as possible.
 END
     exit 0;
-
-
-drclone [OPTIONS] xen | kvm
-  OPTIONS:
-       -s start
-       -t terminate
-       -d delete
-       -c create
-
-       -n number, count of VMs
-       -K kill all, perform stop and delete
-       -A mass restart, perform stop and start
-
-       -T template name
-       -N name of VM
-
-       -l logfile
-       -p print 
-       -h help
-       -V version
-       -v verbose
-
-
-
-
-
+}
 
 sub main {
   if ($help) {
