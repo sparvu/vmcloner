@@ -30,18 +30,16 @@ use List::MoreUtils 'any';
 use Parallel::ForkManager;
 
 
-
 #
 # Command line arguments
 #
 usage() if defined $ARGV[0] and $ARGV[0] eq "--help";
-getopts('hr:vV') or usage();
+getopts('stcdpkKRphn:T:N:l:vV') or usage();
 usage()    if defined $main::opt_h;
 revision() if defined $main::opt_V;
 
 # verbose flag
 my $verbose_flag = defined $main::opt_v ? $main::opt_v : 0;
-
 
 #
 #  Variables
@@ -49,6 +47,16 @@ my $verbose_flag = defined $main::opt_v ? $main::opt_v : 0;
 $main::opt_h = 0;
 $main::opt_v = 0;
 $main::opt_V = 0;
+my $vmconf   = 'vmcloner.conf'; # vmcloner configuration
+my $basePath;
+my $templatePath;
+my $vmPath;
+my $vmImagePath;
+my $logPath;
+my $vmVG;
+my $vmLV;
+my $forks;
+
 local $| = 1;
 
 
@@ -69,6 +77,9 @@ if (( $< != 0 ) or ( $> != 0)) {
   exit(0);
 }
 
+# validate and open configuration file
+my $conf = open_conf($vmconf);
+
 # Command line arguments
 my $cmd_arg = shift;
 
@@ -82,7 +93,7 @@ given($cmd_arg) {
     when('kvm') {  }
 
     # xen hypervisor
-    when('run') { print "run command mode"; }
+    when('xen') {  }
 
     default { usage(); }
 }    
@@ -219,6 +230,48 @@ the requested number of virtual machines as fast as possible.
 END
     exit 0;
 }
+
+
+sub open_conf {
+
+    my ($conf) = @_;
+    my %Config;
+
+    #
+    if ( defined $ENV{'VMCLONER_PATH'} ) {
+        if (-e "$ENV{'VMCLONER_PATH'}/etc/$conf") {
+            Config::Simple->import_from('$ENV{'VMCLONER_PATH'}/etc/$conf', \%Config) or 
+                die "Unable to read config file vmcloner.conf.\n";
+        } else {
+            print "error: $! $ENV{'VMCLONER_PATH'}/etc/$conf \n";
+            usage();
+        }
+    } else {
+        if (-e "/opt/sdrbuild/etc/$conf") {
+            Config::Simple->import_from('/opt/sdrbuild/etc/$conf', \%Config) or 
+                die "Unable to read config file vmcloner.conf.\n";
+        } else {
+            print "error: $! /opt/sdrbuild/etc/$conf \n";
+            usage();
+        }
+    }
+
+
+    # set by %Config
+    $basePath=$Config{'basePath'};
+    $templatePath="$basePath/$Config{'templatePath'}";
+    $vmPath="$basePath/$Config{'domainPath'}";
+    $vmImagePath="$basePath/$Config{'imagePath'}";
+    $logPath="$basePath/$Config{'logPath'}";
+    $vmVG=$Config{'sourceVG'};
+    $vmLV=$Config{'sourceLV'};
+    $forks=$Config{'forks'};
+
+}
+
+
+
+
 
 sub main {
   if ($help) {
@@ -658,6 +711,17 @@ print <<END;
 END
 }
 
+
+# revision - print revision and exit
+#
+sub revision {
+
+    print STDERR <<END;
+vmcloner: 0.10, 2013-12-16
+hypervisors: xen (kvm not yet supported)
+END
+    exit 0;
+}
 ###
 # main program block begin
 ###
