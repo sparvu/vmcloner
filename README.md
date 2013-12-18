@@ -1,6 +1,6 @@
 ![](https://raw.github.com/systemdatarecorder/vmcloner/master/img/vmcloner.png)
 
-# vmcloner - automation test utility
+# vmcloner - virtual machine cloning utility
 
 ## Overview
 
