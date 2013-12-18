@@ -91,10 +91,13 @@ in _./etc_
   * set $vmVG (eg: VG01, XENVG) in vmcloner.conf
 * create /dev/$vmVG/thinpool
   * create this LV as a thin pool (e.g. 250G) for VM's
+
         lvcreate -L 250G --thinpool VG01/thinpool
   * create source (thin) LV's for VM's
+
         lvcreate -V 50G -T --thinpool VG01/thinpool -n thin-disk-lvol
   * now snapshots of thin-disk-lvol can be made
+
         lvcreate -T -n test-thingly -s VG01/thinlymade
 
 * create /dev/$vmVG/OPT for vmcloner to live in
