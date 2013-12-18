@@ -187,14 +187,14 @@ sub usage {
     print STDERR <<END;
 USAGE: vmcloner [OPTIONS] start | stop | create | delete
 OPTIONS:
-  -e xen | kvm               # hypervisor engine
+  -e xen | kvm               # hypervisor engine: Xen, Kvm
 
-  -n number                  # count of VMs
+  -c count                   # count of VMs
   -k kill all                # kill all VMs, execute stop
-  -R restart all             # restart all VMs, execute stop and start
+  -r restart all             # restart all VMs, execute stop and start
 
-  -T template name
-  -N name of VM
+  -t template name           # predefined template name
+  -n name of VM              # name of the VM
 
   -l logfile
   -p print 
@@ -208,8 +208,8 @@ COMMAND:
   create                     # create VMs storage configuration
   delete                     # delete VMs configuration
  
- eg, vmcloner -T deb71_64 -n 50 create
-     vmcloner -n 50 -N ubuntu start
+ eg, vmcloner -c 50 -t deb71_64 create
+     vmcloner -c 50 -n ubuntu start
 
 NOTES:
 vmcloner - automation tool utility, will create, from a named template, 
