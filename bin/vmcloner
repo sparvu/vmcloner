@@ -70,10 +70,10 @@ if (( $< != 0 ) or ( $> != 0)) {
     exit(0);
 }
 
-# open configuration file
+## open configuration file
 open_conf($vmconf);
 
-# other options check
+# check options
 
 
 
@@ -227,6 +227,9 @@ sub open_conf {
     $vmVG=$Config{'sourceVG'};
     $vmLV=$Config{'sourceLV'};
     $forks=$Config{'forks'};
+
+    if($verbose) {
+        print "info: base
 
 }
 
@@ -634,8 +637,7 @@ sub doCreate {
 sub revision {
 
     print STDERR <<END;
-vmcloner: 0.10, 2013-12-31
-hypervisors: xen, kvm
+vmcloner: 0.15, 2013-12-31
 END
     exit 0;
 }
