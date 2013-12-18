@@ -77,8 +77,13 @@ if (( $< != 0 ) or ( $> != 0)) {
   exit(0);
 }
 
-# validate and open configuration file
-my $conf = open_conf($vmconf);
+# open configuration file
+ open_conf($vmconf);
+
+# other options check
+
+
+
 
 # Command line arguments
 my $cmd_arg = shift;
@@ -98,22 +103,6 @@ given($cmd_arg) {
     default { usage(); }
 }    
 
-
-# import config
-# done here because it should die if the conf file isn't available
-# (so load it from cwd)
-my %Config;
-Config::Simple->import_from('xenbuilder.conf', \%Config) or die "Unable to read config file xenbuilder.conf.\n";
-
-# set by %Config
-my $basePath=$Config{'basePath'};
-my $templatePath="$basePath/$Config{'templatePath'}";
-my $vmPath="$basePath/$Config{'domainPath'}";
-my $vmImagePath="$basePath/$Config{'imagePath'}";
-my $logPath="$basePath/$Config{'logPath'}";
-my $vmVG=$Config{'sourceVG'};
-my $vmLV=$Config{'sourceLV'};
-my $forks=$Config{'forks'};
 
 # derived from %Config
 my $templateLVPath="/dev/$vmVG";
