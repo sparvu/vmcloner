@@ -209,8 +209,8 @@ sub open_conf {
             usage();
         }
     } else {
-        if (-e "/opt/sdrbuilder/etc/$conf") {
-            Config::Simple->import_from("/opt/sdrbuilder/etc/$conf", \%Config) or 
+        if (-e "/opt/vmcloner/etc/$conf") {
+            Config::Simple->import_from("/opt/vmcloner/etc/$conf", \%Config) or 
                 die "Unable to read config file vmcloner.conf.\n";
         } else {
             print "error: Unable to read vmcloner.conf $! \n\n";
