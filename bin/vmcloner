@@ -185,33 +185,31 @@ my $log; # this will hold the log file descriptor
 
 sub usage {
     print STDERR <<END;
-USAGE: vmcloner [OPTIONS] kvm | xen
+USAGE: vmcloner [OPTIONS] start | stop | create | delete
 OPTIONS:
-  -s start                           # start all VMs
-  -t terminate                       # terminate all VMs
-  -d delete                          # delete VMs configuration
-  -c create                          # create VMs storage configuration
+  -e xen | kvm               # hypervisor engine
 
-  -n number                          # count of VMs
-  -k kill all                        # kill all VMs, execute stop
-  -K Kill all                        # kill all VMs, execute stop and delete
-  -R restart all                     # restart all VMs, execute stop and start
+  -n number                  # count of VMs
+  -k kill all                # kill all VMs, execute stop
+  -R restart all             # restart all VMs, execute stop and start
 
   -T template name
   -N name of VM
 
   -l logfile
   -p print 
-  -h help                            # help information
-  -v verbose                         # verbose information
-  -V revision                        # revision information
+  -h help                    # help information
+  -v verbose                 # verbose information
+  -V revision                # revision information
 
 COMMAND:
-  kvm                                # use KVM hypervisor
-  xen                                # use XEN hypervisor
-  
- eg, xenbuilder -c -T deb71_64 -n 50
-     xenbuilder -s -n 50 -N ubuntu
+  start                      # start all VMs
+  stop                       # stop all VMs
+  create                     # create VMs storage configuration
+  delete                     # delete VMs configuration
+ 
+ eg, vmcloner -T deb71_64 -n 50 create
+     vmcloner -n 50 -N ubuntu start
 
 NOTES:
 vmcloner - automation tool utility, will create, from a named template, 
