@@ -149,7 +149,6 @@ my $command = $start + $stop + $create + $delete + $templates + $help;
 
 if ($command != 1) {
   print "ERROR: Use EXACTLY ONE mandatory command from --start, --stop, --delete, --create, --templates or --help.\n";
-  printLongHelp();
   exit 1;
 }
 
@@ -193,10 +192,10 @@ OPTIONS:
   -k kill all                # kill all VMs, execute stop
   -r restart all             # restart all VMs, execute stop and start
 
-  -t template name           # predefined template name
-  -n name of VM              # name of the VM
+  -t template                # predefined template name
+  -n name                    # VM basename, defaults to template name
 
-  -l logfile
+  -l logfile                 # log filename
   -p print 
   -h help                    # help information
   -v verbose                 # verbose information
@@ -213,7 +212,10 @@ COMMAND:
 
 NOTES:
 vmcloner - automation tool utility, will create, from a named template, 
-the requested number of virtual machines as fast as possible.
+the requested number of virtual machines.
+
+Commands - use exactly one of the following commands: start, stop, create
+or delete.
 END
     exit 0;
 }
@@ -257,14 +259,7 @@ sub open_conf {
 }
 
 
-
-
-
 sub main {
-  if ($help) {
-    printLongHelp();
-    exit(0);
-  }
 
   my $begin = time();
   print "Script processing started at $time\n";
@@ -661,51 +656,14 @@ sub doCreate {
   return;
 }
 
-sub printLongHelp {
-print <<END;
- This is $0
-
- This script will create, from a named template, the requested number of
- virtual machines.
-
- Mandatory Command Switches:
-  Use EXACTLY ONE of:
-   --start,--stop,--delete,--create,--print|-p,--help|-h (this file)
-
- Option Switches:
-  Short Versions
-
-   -t [ template name ]    : mandatory, default location is $templatePath
-   -c [ VM count ]    : default '1'
-   -n [ VM Name Base ]    : defaults to [ template name ]
-   -l [ Logfile Name ]    : log filename, default is $logPath/$0.[current date]
-
-  Long Versions
-   --help
-   --print
-   --template=[ template name ]
-   --count=[ VM count ]
-   --name=[ VM Name Base ]
-   --logfile=[ logfile name ]
-   --kill      : used with --stop and --delete
-   --all      : used with --stop and --start
-
- Examples:
-
-   \$ xenbuilder --create -t deb71_64 -c 50
-   \$ xenbuilder --start -c 50 -n ubuntu
-
-END
-}
-
 
 # revision - print revision and exit
 #
 sub revision {
 
     print STDERR <<END;
-vmcloner: 0.10, 2013-12-16
-hypervisors: xen (kvm not yet supported)
+vmcloner: 0.10, 2013-12-31
+hypervisors: xen, kvm
 END
     exit 0;
 }
