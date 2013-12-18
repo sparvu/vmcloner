@@ -21,6 +21,7 @@
 
 use strict;
 use warnings;
+use 5.010;
 use POSIX qw(strftime);
 use Getopt::Std;
 use File::Copy;
@@ -202,18 +203,18 @@ sub open_conf {
     #
     if ( defined $ENV{'VMCLONER_PATH'} ) {
         if (-e "$ENV{'VMCLONER_PATH'}/etc/$conf") {
-            Config::Simple->import_from('$ENV{'VMCLONER_PATH'}/etc/$conf', \%Config) or 
+            Config::Simple->import_from("$ENV{'VMCLONER_PATH'}/etc/$conf", \%Config) or 
                 die "Unable to read config file vmcloner.conf.\n";
         } else {
             print "error: $! $ENV{'VMCLONER_PATH'}/etc/$conf \n";
             usage();
         }
     } else {
-        if (-e "/opt/sdrbuild/etc/$conf") {
-            Config::Simple->import_from('/opt/sdrbuild/etc/$conf', \%Config) or 
+        if (-e "/opt/sdrbuilder/etc/$conf") {
+            Config::Simple->import_from("/opt/sdrbuilder/etc/$conf", \%Config) or 
                 die "Unable to read config file vmcloner.conf.\n";
         } else {
-            print "error: $! /opt/sdrbuild/etc/$conf \n";
+            print "error: $! /opt/sdrbuilder/etc/$conf \n";
             usage();
         }
     }
