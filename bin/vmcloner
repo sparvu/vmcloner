@@ -80,10 +80,10 @@ open_conf($vmconf);
 if ( defined $main::opt_e ) {
     $engine = $main::opt_e;
 
-    # format process target
+    # check engine types
     usage() if ( $main::opt_e !~ /xen|kvm/ );
-} else { usage(); }
 
+} else { usage(); }
 
 
 # Command line arguments
@@ -167,9 +167,9 @@ my $log; # this will hold the log file descriptor
 
 sub usage {
     print STDERR <<END;
-USAGE: vmcloner [OPTIONS] start | stop | create | delete
+USAGE: vmcloner -e engine [OPTIONS] start|stop|create|delete
 OPTIONS:
-  -e xen | kvm               # hypervisor engine: Xen, Kvm
+  -e xen|kvm                 # hypervisor engine: Xen, Kvm
 
   -c count                   # count of VMs
   -k kill all                # kill all VMs, execute stop
