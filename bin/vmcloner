@@ -33,6 +33,7 @@ use Parallel::ForkManager;
 #
 # Command line arguments
 #
+usage() if not defined $ARGV[0];
 usage() if defined $ARGV[0] and $ARGV[0] eq "--help";
 getopts('c:e:krt:n:l:phvV') or usage();
 usage()    if defined $main::opt_h;
