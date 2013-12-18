@@ -1,4 +1,4 @@
-![](https://raw.github.com/systemdatarecorder/vmcloner/master/molecule.png)
+![](https://raw.github.com/systemdatarecorder/vmcloner/master/img/vmcloner.png)
 
 # vmcloner - automation test utility
 
