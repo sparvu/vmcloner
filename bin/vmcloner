@@ -21,9 +21,9 @@
 
 use strict;
 use warnings;
+use 5.010;
 use POSIX qw(strftime);
 use Getopt::Std;
-use Getopt::Long;
 use File::Copy;
 use Config::Simple;
 use List::MoreUtils 'any';
@@ -34,7 +34,7 @@ use Parallel::ForkManager;
 # Command line arguments
 #
 usage() if defined $ARGV[0] and $ARGV[0] eq "--help";
-getopts('stcdpkKRphn:T:N:l:vV') or usage();
+getopts('c:e:krt:n:l:phvV') or usage();
 usage()    if defined $main::opt_h;
 revision() if defined $main::opt_V;
 
@@ -65,23 +65,15 @@ local $| = 1;
 # ######### #
 
 
-# if @ARGV is empty, show usage and quit
-#if ($#ARGV < 0) {
-#  print "usage: $0 [-h] || [--help]\n";
-#  print "example: $0 --create -t [template] -c [count] -n [name] -l [logfile]\n";
-#  exit(0);
-#}
-
 if (( $< != 0 ) or ( $> != 0)) {
   print "Please run this script as user root.\n";
   exit(0);
 }
 
 # open configuration file
- open_conf($vmconf);
+open_conf($vmconf);
 
 # other options check
-
 
 
 
@@ -94,14 +86,20 @@ my $cmd_mode = 0;
 # check on internal commands
 given($cmd_arg) {
 
-    # kvm hypervisor
-    when('kvm') {  }
+    # start 
+    when('start') {  }
 
-    # xen hypervisor
-    when('xen') {  }
+    # stop
+    when('stop') {  }
+
+    # create 
+    when('create') {  }
+
+    # delete 
+    when('delete') {  }
 
     default { usage(); }
-}    
+}
 
 
 # derived from %Config
@@ -126,31 +124,7 @@ my $template;
 my $count;
 my $vmName;
 
-my %opts;
-GetOptions (\%opts,
-  "start"        => \$start,   # flags
-  "stop"         => \$stop,
-  "create"       => \$create,
-  "delete|destroy" => \$delete,
-  "kill"         => \$kill,
-  "all"          => \$all,
-  "templates|list" => \$templates,
-  "verbose|v"    => \$verbose,
-  "help|h"       => \$help,
-  "logfile|l=s"  => \$logFile,  # strings
-  "template|t=s" => \$template,
-  "name|n=s"     => \$vmName,
-  "count|c=i"    => \$count     # number
-  );
-
 my $flag = 0;
-
-my $command = $start + $stop + $create + $delete + $templates + $help;
-
-if ($command != 1) {
-  print "ERROR: Use EXACTLY ONE mandatory command from --start, --stop, --delete, --create, --templates or --help.\n";
-  exit 1;
-}
 
 # set the time for the logging
 my $time = strftime "%Y%m%d-%H%M%S", localtime;
@@ -161,7 +135,7 @@ if (!defined $vmName) {
     $vmName = $template;
   }
   else {
-    $vmName = "xenbuilder";
+    $vmName = "vmcloner";
   }
 }
 
@@ -201,7 +175,7 @@ OPTIONS:
   -v verbose                 # verbose information
   -V revision                # revision information
 
-COMMAND:
+COMMANDS:
   start                      # start all VMs
   stop                       # stop all VMs
   create                     # create VMs storage configuration
@@ -211,11 +185,9 @@ COMMAND:
      vmcloner -c 50 -n ubuntu start
 
 NOTES:
-vmcloner - automation tool utility, will create, from a named template, 
-the requested number of virtual machines.
+The operation commands are mutually exclusive: start, stop, create or delete.
+Currently vmcloner supports Xen hypervisor engine.
 
-Commands - use exactly one of the following commands: start, stop, create
-or delete.
 END
     exit 0;
 }
@@ -229,22 +201,21 @@ sub open_conf {
     #
     if ( defined $ENV{'VMCLONER_PATH'} ) {
         if (-e "$ENV{'VMCLONER_PATH'}/etc/$conf") {
-            Config::Simple->import_from('$ENV{'VMCLONER_PATH'}/etc/$conf', \%Config) or 
+            Config::Simple->import_from("$ENV{'VMCLONER_PATH'}/etc/$conf", \%Config) or 
                 die "Unable to read config file vmcloner.conf.\n";
         } else {
             print "error: $! $ENV{'VMCLONER_PATH'}/etc/$conf \n";
             usage();
         }
     } else {
-        if (-e "/opt/sdrbuild/etc/$conf") {
-            Config::Simple->import_from('/opt/sdrbuild/etc/$conf', \%Config) or 
+        if (-e "/opt/sdrbuilder/etc/$conf") {
+            Config::Simple->import_from("/opt/sdrbuilder/etc/$conf", \%Config) or 
                 die "Unable to read config file vmcloner.conf.\n";
         } else {
-            print "error: $! /opt/sdrbuild/etc/$conf \n";
+            print "error: $! /opt/sdrbuilder/etc/$conf \n";
             usage();
         }
     }
-
 
     # set by %Config
     $basePath=$Config{'basePath'};
