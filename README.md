@@ -1,19 +1,19 @@
 ![](https://raw.github.com/systemdatarecorder/vmcloner/master/img/vmcloner.png)
 
-# vmcloner - automation test utility
+# vmcloner - VM cloning utility
 
 ## Overview
 
-vmcloner is a script designed to help you create, start, stop and delete mass numbers of
-virtual machines, Xen or KVM based. It is 'mostly automated', meaning that you have to 
-do the groundwork first, and then your server will work with this script with minimal 
-interference.
+vmcloner is a script designed to help you create, start, stop and delete 
+mass numbers of virtual machines, Xen or KVM based. It is 'mostly automated', 
+meaning that you have to do the groundwork first, and then your server will 
+work with this script with minimal interference.
 
-It is written in perl and makes extensive use of perl modules where available, and 
-system calls where not.
+It is written in perl and makes extensive use of perl modules where available, 
+and system calls where not.
 
-This readme file is designed to be read on github. It is written using github's
-own flavour of markdown.
+This readme file is designed to be read on github. It is written using 
+github's own flavour of markdown.
 
 ## default paths
 

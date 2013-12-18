@@ -65,7 +65,7 @@ local $| = 1;
 # MAIN BODY #
 # ######### #
 
-
+# check superuser access
 if (( $< != 0 ) or ( $> != 0)) {
   print "Please run this script as user root.\n";
   exit(0);
@@ -188,6 +188,8 @@ COMMANDS:
 NOTES:
 The operation commands are mutually exclusive: start, stop, create or delete.
 Currently vmcloner only supports the Xen hypervisor engine.
+Make sure you have exported VMCLONER_PATH and VMCLONER_ENGINE before
+running vmcloner. Currently vmcloner supports Xen hypervisor engine.
 
 END
     exit 0;
@@ -203,7 +205,7 @@ sub open_conf {
     if ( defined $ENV{'VMCLONER_PATH'} ) {
         if (-e "$ENV{'VMCLONER_PATH'}/etc/$conf") {
             Config::Simple->import_from("$ENV{'VMCLONER_PATH'}/etc/$conf", \%Config) or 
-                die "Unable to read config file vmcloner.conf.\n";
+                die "Unable to read config file: vmcloner.conf.\n";
         } else {
             print "error: $! $ENV{'VMCLONER_PATH'}/etc/$conf \n";
             usage();
@@ -213,7 +215,7 @@ sub open_conf {
             Config::Simple->import_from("/opt/sdrbuilder/etc/$conf", \%Config) or 
                 die "Unable to read config file vmcloner.conf.\n";
         } else {
-            print "error: $! /opt/sdrbuilder/etc/$conf \n";
+            print "error: $! /opt/vmcloner/etc/$conf \n";
             usage();
         }
     }
