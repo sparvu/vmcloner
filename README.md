@@ -1,3 +1,5 @@
+![](https://raw.github.com/systemdatarecorder/vmcloner/master/molecule.png)
+
 # vmcloner - automation test utility
 
 ## Overview
