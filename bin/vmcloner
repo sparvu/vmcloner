@@ -48,11 +48,11 @@ $main::opt_h = 0;
 $main::opt_v = 0;
 $main::opt_V = 0;
 my $vmconf   = 'vmcloner.conf'; # vmcloner configuration
-my $basePath;
-my $templatePath;
-my $vmPath;
-my $vmImagePath;
-my $logPath;
+my $basepath;
+my $templatepath;
+my $vmpath;
+my $vmimagepath;
+my $logpath;
 my $vmVG;
 my $vmLV;
 my $forks;
@@ -103,7 +103,7 @@ given($cmd_arg) {
 
 
 # derived from %Config
-my $templateLVPath="/dev/$vmVG";
+my $templateLVpath="/dev/$vmVG";
 
 # global variables
 #my @runningDomains;
@@ -188,7 +188,6 @@ NOTES:
 The operation commands are mutually exclusive: start, stop, create or delete.
 Make sure you have exported VMCLONER_PATH and VMCLONER_ENGINE before
 running vmcloner. Currently vmcloner supports Xen hypervisor engine.
-
 END
     exit 0;
 }
@@ -199,11 +198,12 @@ sub open_conf {
     my ($conf) = @_;
     my %Config;
 
-    #
+    # check for VMCLONER_PATH
     if ( defined $ENV{'VMCLONER_PATH'} ) {
         if (-e "$ENV{'VMCLONER_PATH'}/etc/$conf") {
             Config::Simple->import_from("$ENV{'VMCLONER_PATH'}/etc/$conf", \%Config) or 
                 die "Unable to read config file: vmcloner.conf.\n";
+            $basepath="$ENV{'VMCLONER_PATH'}";
         } else {
             print "error: $! $ENV{'VMCLONER_PATH'}/etc/$conf \n";
             usage();
@@ -212,6 +212,7 @@ sub open_conf {
         if (-e "/opt/vmcloner/etc/$conf") {
             Config::Simple->import_from("/opt/vmcloner/etc/$conf", \%Config) or 
                 die "Unable to read config file vmcloner.conf.\n";
+            $basepath="/opt/vmcloner";
         } else {
             print "error: Unable to read vmcloner.conf $! \n\n";
             usage();
@@ -219,17 +220,23 @@ sub open_conf {
     }
 
     # set by %Config
-    $basePath=$Config{'basePath'};
-    $templatePath="$basePath/$Config{'templatePath'}";
-    $vmPath="$basePath/$Config{'domainPath'}";
-    $vmImagePath="$basePath/$Config{'imagePath'}";
-    $logPath="$basePath/$Config{'logPath'}";
+    $templatepath="$basepath/$Config{'templatepath'}";
+    $vmpath="$basepath/$Config{'domainpath'}";
+    $vmimagepath="$basepath/$Config{'imagepath'}";
+    $logpath="$basepath/$Config{'logpath'}";
     $vmVG=$Config{'sourceVG'};
     $vmLV=$Config{'sourceLV'};
     $forks=$Config{'forks'};
 
-    if($verbose) {
-        print "info: base
+    if($verbose_flag) {
+        print "info: basepath $basepath\n";
+        print "info: templatepath $templatepath\n";
+        print "info: vmimagepath $vmimagepath\n";
+        print "info: logpath $logpath\n";
+        print "info: vmVG $vmVG\n";
+        print "info: vmLV $vmLV\n";
+        print "info: forks $forks\n";
+    }
 
 }
 
@@ -287,11 +294,11 @@ sub doStart {
     if ($count > 0) {
       my $match = any { /$domain/ } @runningDomains;
       if ($match eq "") {
-        print $log "trying to start $vmPath/$vmName-$domain.vm\n";
+        print $log "trying to start $vmpath/$vmName-$domain.vm\n";
         $pm->run_on_start($count--);
         $pm->run_on_wait(sub { print "."; }, 1);
         $pm->start and next; # do the fork
-         system "/usr/sbin/xl create $vmPath/$vmName-$domain.vm >> $logPath/$logFile.out 2>&1";
+         system "/usr/sbin/xl create $vmpath/$vmName-$domain.vm >> $logpath/$logFile.out 2>&1";
         $pm->finish; # do the exit in the child process
       }
     }
@@ -317,10 +324,10 @@ sub doStop {
         if (defined $domain) {
           $pm->start and next; # do the fork
             if ($kill == 1) {
-              system "/usr/sbin/xl destroy $vmName-$domain >> $logPath/$logFile.out 2>&1";
+              system "/usr/sbin/xl destroy $vmName-$domain >> $logpath/$logFile.out 2>&1";
             }
             else {
-              system "/usr/sbin/xl shutdown $vmName-$domain >> $logPath/$logFile.out 2>&1";
+              system "/usr/sbin/xl shutdown $vmName-$domain >> $logpath/$logFile.out 2>&1";
             }
           $pm->finish; # do the exit in the child process
         }
@@ -329,7 +336,7 @@ sub doStop {
         my $domain = pop(@runningDomains);
         if (defined $domain) {
           $pm->start and next; # do the fork
-            system "/usr/sbin/xl destroy $vmName-$domain >> $logPath/$logFile.out 2>&1";
+            system "/usr/sbin/xl destroy $vmName-$domain >> $logpath/$logFile.out 2>&1";
           $pm->finish; # do the exit in the child process
         }
       }
@@ -365,23 +372,23 @@ sub doDelete {
         $match = any { /$domain/ } @runningDomains;
       }
       unless ($match eq '') {
-        system "/usr/sbin/xl destroy $vmName-$domain >> $logPath/$logFile.out 2>&1";
+        system "/usr/sbin/xl destroy $vmName-$domain >> $logpath/$logFile.out 2>&1";
       }
       if (defined $domain) {
         #use perl to unlink the domain config
-        unlink "$templatePath/$vmName-$domain.vm";
+        unlink "$templatepath/$vmName-$domain.vm";
         #  need to use lvremove via system to unlink lv's
-        my $cmd1 = "/sbin/lvremove -f $templateLVPath/$vmName-$domain-disk";
-        my $cmd2 = "/sbin/lvremove -f $templateLVPath/$vmName-$domain-swap";
-        my $redirect = ">> $logPath/$logFile.out 2>&1";
+        my $cmd1 = "/sbin/lvremove -f $templateLVpath/$vmName-$domain-disk";
+        my $cmd2 = "/sbin/lvremove -f $templateLVpath/$vmName-$domain-swap";
+        my $redirect = ">> $logpath/$logFile.out 2>&1";
         my $command;
 
-	if (-e "$templateLVPath/$vmName-$domain-disk") {
-          $command .= "/sbin/lvremove -f $templateLVPath/$vmName-$domain-disk";
+	if (-e "$templateLVpath/$vmName-$domain-disk") {
+          $command .= "/sbin/lvremove -f $templateLVpath/$vmName-$domain-disk";
           $command .= $redirect;
         }
-	if (-e "$templateLVPath/$vmName-$domain-swap") {
-          $command .= " ; /sbin/lvremove -f $templateLVPath/$vmName-$domain-swap";
+	if (-e "$templateLVpath/$vmName-$domain-swap") {
+          $command .= " ; /sbin/lvremove -f $templateLVpath/$vmName-$domain-swap";
           $command .= $redirect;
         }
 	unless ($command eq '') {
@@ -399,14 +406,14 @@ sub showConfig {
   # print all built-in variables
   # print all modified variables
   # note: do useful existence/perm checks at some point you lazy git
-  print "VM (Image) path is $vmImagePath\n";
-  if (!-e $vmImagePath) { print "\tError! $vmImagePath does not exist!\n"; }
-  print "template config path is $templatePath\n";
-  if (!-e $templatePath) { print "\tError! $templatePath does not exist!\n"; }
-  print "VM (Domain) config path is $vmPath\n";
-  if (!-e $vmPath) { print "\tError! $vmPath does not exist!\n"; }
-  print "logfile path is $logPath\n";
-  if (!-e $logPath) { print "\tError! $logPath does not exist!\n"; }
+  print "VM (Image) path is $vmimagepath\n";
+  if (!-e $vmimagepath) { print "\tError! $vmimagepath does not exist!\n"; }
+  print "template config path is $templatepath\n";
+  if (!-e $templatepath) { print "\tError! $templatepath does not exist!\n"; }
+  print "VM (Domain) config path is $vmpath\n";
+  if (!-e $vmpath) { print "\tError! $vmpath does not exist!\n"; }
+  print "logfile path is $logpath\n";
+  if (!-e $logpath) { print "\tError! $logpath does not exist!\n"; }
   return;
 }
 
@@ -421,7 +428,7 @@ sub getConfiguredDomains {
   # return array
   my $file;
   my @domains;
-  opendir (DIR, $templatePath) or die "Error opening $templatePath, $!\n";
+  opendir (DIR, $templatepath) or die "Error opening $templatepath, $!\n";
   while ($file = readdir(DIR)) {
     #next if ($file =~ m/^\./);
     if ($file =~ m/^$vmName-(\d+)\.vm$/) {
@@ -459,7 +466,7 @@ sub listTemplates {
   my $file;
   my @files;
   my @vmlist;
-  opendir (DIR, $templatePath) or die "Error opening $templatePath, $!\n";
+  opendir (DIR, $templatepath) or die "Error opening $templatepath, $!\n";
   while ($file = readdir(DIR)) {
     #next if ($file =~ m/^\./);
     if ($file =~ m/^(\S+)\.template$/) {
@@ -481,31 +488,31 @@ sub listTemplates {
 
 sub buildCommand {
 #  get options
-  print $log "template $template is $templatePath/$template.template\n";
-  print $log "logfile is $logPath/$logFile\n";
+  print $log "template $template is $templatepath/$template.template\n";
+  print $log "logfile is $logpath/$logFile\n";
   print $log "VM's are named $vmName\[1 to $count\]\n"; #fix me: grab min/max for this
   print $log "count is $count\n";
 #  show command
-#  print "command is:\n\t$0 -t $templatePath/$template -l $logPath/$logFile -n $vmName -c $count\n\n";
-  print $log "command is:\n\t$0 -t $templatePath/$template -l $logPath/$logFile -n $vmName -c $count\n";
+#  print "command is:\n\t$0 -t $templatepath/$template -l $logpath/$logFile -n $vmName -c $count\n\n";
+  print $log "command is:\n\t$0 -t $templatepath/$template -l $logpath/$logFile -n $vmName -c $count\n";
   return;
 }
 
 sub openLog {
-#  print "Opening logfile $logPath/$logFile\n";
-  open ($log, ">", "$logPath/$logFile") or die "cannot open > $logPath/$logFile: $!";
+#  print "Opening logfile $logpath/$logFile\n";
+  open ($log, ">", "$logpath/$logFile") or die "cannot open > $logpath/$logFile: $!";
   return;
 }
 
 sub closeLog {
-  print "check logfile $logPath/$logFile\n";
-  close ($log) or warn "cannot close $logPath/$logFile: $!";
+  print "check logfile $logpath/$logFile\n";
+  close ($log) or warn "cannot close $logpath/$logFile: $!";
   return;
 }
 
 sub getMaxVmId {
   # open template dir
-  opendir(DIR, $vmPath) or die "can't open dir $vmPath: $!";
+  opendir(DIR, $vmpath) or die "can't open dir $vmpath: $!";
   # read files in template path
     my @files = readdir(DIR);
   # check for pre-existing template+digit
@@ -518,17 +525,17 @@ sub getMaxVmId {
       }
     }
     closedir DIR;
-  # increment counter to digit+1 $templatePath/$template
+  # increment counter to digit+1 $templatepath/$template
   return($maxId+1);
 }
 
 sub buildVm {
   my $id = $_[0]; # $_[0] is $vmId
-  my $source = "$templatePath/$template.template";
-  my $target = "$vmPath/$vmName-$id.vm";
+  my $source = "$templatepath/$template.template";
+  my $target = "$vmpath/$vmName-$id.vm";
   if ($verbose == 1) { print "creating VM config\n"; }
   my %Config;
-  Config::Simple->import_from("$templatePath/$template.conf", \%Config) or die "Unable to read VM template config file $templatePath/$template.conf.\n";
+  Config::Simple->import_from("$templatepath/$template.conf", \%Config) or die "Unable to read VM template config file $templatepath/$template.conf.\n";
   print $log "creating VM config: source is $source, target is $target.\n";
   if ( -f "$source" ) { # Check with -f only for files (no directories)
     open my $in,  '<', $source or die "Can't read old file: $!";
@@ -556,7 +563,7 @@ sub buildVm {
     s/\bMEM\b/$Config{'mem'}/g;
     s/\bBRIDGE1\b/$Config{'bridge1'}/g;
     s/\bBRIDGE2\b/$Config{'bridge2'}/g;
-    s/\bPATH\b/$templateLVPath/g;
+    s/\bPATH\b/$templateLVpath/g;
   }
 
   print $out @configFile;
@@ -565,7 +572,7 @@ sub buildVm {
 
   if ($verbose == 1) { print "creating logical volumes.\n"; }
   print $log "creating VM LV: source is $vmVG/$Config{'vmname'}-disk, target is $vmName-$id-disk.\n";
-  if ( -e "$templateLVPath/$Config{'vmname'}-disk" ) {
+  if ( -e "$templateLVpath/$Config{'vmname'}-disk" ) {
 
     # swap file creation
     my $cmd1 = "/sbin/lvcreate -V$Config{'swap'} -n $vmName-$id-swap -T $vmVG/thinpool";
@@ -578,7 +585,7 @@ sub buildVm {
     # start the VM
     my $cmd4 = "/usr/sbin/xl create $target";
 
-    my $redirect = ">> $logPath/$logFile.out 2>&1";
+    my $redirect = ">> $logpath/$logFile.out 2>&1";
 
     # do the commands
     # build swap if it's set
