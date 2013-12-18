@@ -49,22 +49,19 @@ github's own flavour of markdown.
 <TR>
 <TD>create_image.sh</TD><TD>example commands for xen-create-image</TD>
 </TR>
-<TR>
-<TD>README</TD><TD>this file</TD>
-</TR>
 </TABLE>
 
 in _./etc_
 
 <TABLE>
 <TR>
-<TD>template.template</TD><TD>xen config file (some are templates)</TD>
+<TD>[template].template</TD><TD>xen vm template file. eg. precise.template</TD>
 </TR>
 <TR>
-<TD>template.conf</TD><TD>config file to enable scripting of template .cfg files</TD>
+<TD>[template].conf</TD><TD>config file to fine-tune scripting of template files. eg. precise.conf</TD>
 </TR>
 <TR>
-<TD>vmname-id.vm</TD><TD>running xen domain from vmcloner</TD>
+<TD>[vmname]-[id].vm</TD><TD>configured xen domain created by vmcloner from [template].template. eg. buildervm-1.vm</TD>
 </TR>
 </TABLE>
 
