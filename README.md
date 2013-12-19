@@ -111,6 +111,10 @@ in _./etc_
         /sbin/iptables --append FORWARD --in-interface bridge0 -j ACCEPT  
         mkdir -p /var/run/xen  
 
+## BUGS
+
+http://www.systemdatarecorder.org:9009/bugzilla/show_bug.cgi?id=285
+
 ## TODO
 
 - [x] Stabilize options (--start,--stop,--create,--delete,--templates)
