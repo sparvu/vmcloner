@@ -113,7 +113,7 @@ in _./etc_
 
 ## BUGS
 
-http://www.systemdatarecorder.org:9009/bugzilla/show_bug.cgi?id=285
+http://www.systemdatarecorder.org:9009/bugzilla/buglist.cgi?quicksearch=vmcloner
 
 ## TODO
 
