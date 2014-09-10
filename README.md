@@ -1,5 +1,3 @@
-![](https://raw.github.com/systemdatarecorder/vmcloner/master/img/vmcloner.png)
-
 # vmcloner - VM cloning utility
 
 ## Overview
